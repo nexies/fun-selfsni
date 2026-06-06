@@ -1,0 +1,268 @@
+name: fun-sites-https
+
+x-static-site: &static-site
+  image: nginx:alpine
+  restart: unless-stopped
+  expose:
+    - "80"
+  networks:
+    - web
+  healthcheck:
+    test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/ >/dev/null || exit 1"]
+    interval: 30s
+    timeout: 5s
+    retries: 3
+
+x-tls-environment: &tls-environment
+  CERT_NAME: "${CERT_NAME:?Set CERT_NAME in .env}"
+  SERVER_NAME: "${SERVER_NAME:?Set SERVER_NAME in .env}"
+  TRUSTED_PROXY_CIDR: "${TRUSTED_PROXY_CIDR:-172.31.250.0/24}"
+
+x-https-proxy: &https-proxy
+  image: nginx:alpine
+  restart: unless-stopped
+  ports:
+    # SelfSNI для Reality/VLESS: ожидает PROXY protocol.
+    - "127.0.0.1:${SELFSNI_PORT:-9000}:443"
+
+    # Обычный локальный HTTPS без PROXY protocol.
+    - "127.0.0.1:${LOCAL_HTTPS_PORT:-9001}:444"
+  volumes:
+    - "${CERTBOT_DIR:-/etc/letsencrypt}:/etc/letsencrypt:ro"
+    - "./nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro"
+  networks:
+    - web
+  healthcheck:
+    # Обычный HTTPS-запрос без PROXY header здесь намеренно не работает.
+    test: ["CMD-SHELL", "nginx -t"]
+    interval: 30s
+    timeout: 5s
+    retries: 3
+
+services:
+  matrix:
+    <<: *static-site
+    profiles: ["matrix"]
+    container_name: funsite-matrix-app
+    volumes:
+      - matrix_data:/usr/share/nginx/html
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        if [ ! -f /usr/share/nginx/html/.site-ready ]; then
+          apk add --no-cache git
+          find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          git clone --depth 1 \
+            https://github.com/Rezmason/matrix.git \
+            /usr/share/nginx/html
+          rm -rf /usr/share/nginx/html/.git
+          touch /usr/share/nginx/html/.site-ready
+        fi
+        exec nginx -g 'daemon off;'
+
+  matrix-https:
+    <<: *https-proxy
+    profiles: ["matrix"]
+    container_name: funsite-matrix-https
+    environment:
+      <<: *tls-environment
+      UPSTREAM: "matrix:80"
+    depends_on:
+      matrix:
+        condition: service_healthy
+
+  terminal:
+    image: ghcr.io/m4tt72/terminal
+    profiles: ["terminal"]
+    container_name: funsite-terminal-app
+    restart: unless-stopped
+    expose:
+      - "3000"
+    networks:
+      - web
+
+  terminal-https:
+    <<: *https-proxy
+    profiles: ["terminal"]
+    container_name: funsite-terminal-https
+    environment:
+      <<: *tls-environment
+      UPSTREAM: "terminal:3000"
+    depends_on:
+      terminal:
+        condition: service_started
+
+  particles:
+    <<: *static-site
+    profiles: ["particles"]
+    container_name: funsite-particles-app
+    volumes:
+      - particles_data:/usr/share/nginx/html
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        if [ ! -f /usr/share/nginx/html/.site-ready ]; then
+          apk add --no-cache git
+          find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          git clone --depth 1 \
+            https://github.com/tsparticles/landing-page-template.git \
+            /usr/share/nginx/html
+          rm -rf /usr/share/nginx/html/.git
+          touch /usr/share/nginx/html/.site-ready
+        fi
+        exec nginx -g 'daemon off;'
+
+  particles-https:
+    <<: *https-proxy
+    profiles: ["particles"]
+    container_name: funsite-particles-https
+    environment:
+      <<: *tls-environment
+      UPSTREAM: "particles:80"
+    depends_on:
+      particles:
+        condition: service_healthy
+
+  cyberpunk:
+    <<: *static-site
+    profiles: ["cyberpunk"]
+    container_name: funsite-cyberpunk-app
+    volumes:
+      - cyberpunk_data:/usr/share/nginx/html
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        if [ ! -f /usr/share/nginx/html/.site-ready ]; then
+          apk add --no-cache git
+          find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          rm -rf /tmp/website-templates
+          git clone --depth 1 \
+            https://github.com/FourTwentyDev/website-templates.git \
+            /tmp/website-templates
+          cp -a /tmp/website-templates/basic/three/. /usr/share/nginx/html/
+          rm -rf /tmp/website-templates
+          touch /usr/share/nginx/html/.site-ready
+        fi
+        exec nginx -g 'daemon off;'
+
+  cyberpunk-https:
+    <<: *https-proxy
+    profiles: ["cyberpunk"]
+    container_name: funsite-cyberpunk-https
+    environment:
+      <<: *tls-environment
+      UPSTREAM: "cyberpunk:80"
+    depends_on:
+      cyberpunk:
+        condition: service_healthy
+
+  fluid:
+    <<: *static-site
+    profiles: ["fluid"]
+    container_name: funsite-fluid-app
+    volumes:
+      - fluid_data:/usr/share/nginx/html
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        if [ ! -f /usr/share/nginx/html/.site-ready ]; then
+          apk add --no-cache wget
+          find /usr/share/nginx/html -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          wget -qO /usr/share/nginx/html/fluid.js \
+            https://unpkg.com/webgl-fluid-enhanced@0.8.0/dist/index.es.js
+          cat > /usr/share/nginx/html/index.html <<'HTML'
+        <!doctype html>
+        <html lang="ru">
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>WebGL Fluid</title>
+          <style>
+            html, body {
+              width: 100%;
+              height: 100%;
+              margin: 0;
+              overflow: hidden;
+              background: #050510;
+            }
+            .title {
+              position: fixed;
+              inset: 0;
+              display: grid;
+              place-items: center;
+              pointer-events: none;
+              color: white;
+              font: 700 clamp(2rem, 8vw, 6rem) system-ui;
+              letter-spacing: .08em;
+              text-shadow: 0 0 24px rgba(255,255,255,.45);
+              mix-blend-mode: screen;
+            }
+            .hint {
+              position: fixed;
+              left: 50%;
+              bottom: 24px;
+              transform: translateX(-50%);
+              color: rgba(255,255,255,.75);
+              font: 14px system-ui;
+              pointer-events: none;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="title">FLUID</div>
+          <div class="hint">Двигайте мышью · Пробел — новый всплеск</div>
+          <script type="module">
+            import WebGLFluidEnhanced from "./fluid.js";
+
+            const simulation = new WebGLFluidEnhanced();
+            simulation.setConfig({
+              colorPalette: ["#00e5ff", "#7c3aed", "#ff2bd6", "#38bdf8"],
+              densityDissipation: 2.2,
+              velocityDissipation: 0.35,
+              colorUpdateSpeed: 8,
+              hover: true,
+              brightness: 0.8,
+              bloom: true
+            });
+            simulation.start();
+
+            addEventListener("keydown", (event) => {
+              if (event.code === "Space") simulation.multipleSplats(3);
+            });
+            addEventListener("beforeunload", () => simulation.stop());
+          </script>
+        </body>
+        </html>
+        HTML
+          touch /usr/share/nginx/html/.site-ready
+        fi
+        exec nginx -g 'daemon off;'
+
+  fluid-https:
+    <<: *https-proxy
+    profiles: ["fluid"]
+    container_name: funsite-fluid-https
+    environment:
+      <<: *tls-environment
+      UPSTREAM: "fluid:80"
+    depends_on:
+      fluid:
+        condition: service_healthy
+
+networks:
+  web:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "${DOCKER_SUBNET:-172.31.250.0/24}"
+          gateway: "${DOCKER_GATEWAY:-172.31.250.1}"
+
+volumes:
+  matrix_data:
+  particles_data:
+  cyberpunk_data:
+  fluid_data:
