@@ -1,4 +1,3 @@
-```yaml
 name: fun-sites-https
 
 x-static-site: &static-site
