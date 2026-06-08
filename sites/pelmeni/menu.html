@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Меню — PelMen</title>
+<link rel="stylesheet" href="styles/base.css">
+<style>
+  .page-head{ padding:64px 0 30px; }
+  .page-head h1{ font-family:var(--serif); font-weight:600; font-size:clamp(2.8rem,6vw,5rem); line-height:.95; }
+  .page-head p{ font-size:1.1rem; color:var(--tx-dim); max-width:52ch; margin:18px 0 0; }
+
+  .toolbar{ position:sticky; top:74px; z-index:40; background:linear-gradient(180deg,var(--ink) 60%, transparent); padding:18px 0 22px; }
+  .toolbar-inner{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .cat-tabs{ display:flex; gap:9px; flex-wrap:wrap; }
+  .toolbar .spacer{ flex:1; }
+  .sort{ display:flex; align-items:center; gap:8px; color:var(--tx-dim); font-size:.86rem; }
+
+  .grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; padding-bottom:60px; }
+  .prod{ display:flex; flex-direction:column; overflow:hidden; transition:.3s; }
+  .prod:hover{ transform:translateY(-6px); border-color:var(--gold-soft); }
+  .prod .food-ph{ aspect-ratio:4/3; border-radius:0; }
+  .prod .body{ padding:22px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .prod .top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+  .prod .title{ font-family:var(--serif); font-size:1.55rem; line-height:1.12; }
+  .prod .desc{ font-size:.9rem; color:var(--tx-dim); flex:1; }
+  .spice{ display:inline-flex; gap:3px; }
+  .spice i{ width:7px; height:7px; border-radius:50%; background:var(--tx-ghost); }
+  .spice i.on{ background:var(--tomato); }
+  .prod .row{ display:flex; align-items:center; justify-content:space-between; margin-top:6px; }
+  .prod .price{ font-weight:800; font-size:1.2rem; }
+  .prod .price small{ color:var(--tx-faint); font-weight:600; font-size:.78rem; }
+
+  .build-banner{ margin:8px 0 50px; border-radius:var(--r-xl); overflow:hidden; background:linear-gradient(120deg,var(--bordo-deep),var(--ink-2) 75%); border:1px solid var(--line); padding:44px 48px; display:flex; align-items:center; justify-content:space-between; gap:30px; flex-wrap:wrap; position:relative; }
+  .build-banner::after{ content:""; position:absolute; right:-40px; bottom:-60px; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle,rgba(201,162,75,.28),transparent 70%); }
+  .build-banner h2{ font-family:var(--serif); font-size:2.2rem; line-height:1.05; position:relative; z-index:2; }
+  .build-banner p{ color:var(--tx-dim); margin:8px 0 0; max-width:44ch; position:relative; z-index:2; }
+
+  @media (max-width:860px){ .grid{ grid-template-columns:1fr 1fr; } .toolbar{ top:0; } }
+  @media (max-width:560px){ .grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<header data-nav></header>
+
+<div class="wrap page-head">
+  <span class="eyebrow">Каталог</span>
+  <h1 style="margin-top:18px">Меню<br>продукции</h1>
+  <p>Авторские пельмени ручной лепки: от сибирской классики до краба и оленины. Лепим под заказ, без заморозки.</p>
+</div>
+
+<div class="toolbar">
+  <div class="wrap toolbar-inner">
+    <div class="cat-tabs" id="cats"></div>
+    <span class="spacer"></span>
+    <div class="sort">
+      <span>Сортировка:</span>
+      <select class="select" id="sort" style="width:auto; padding:9px 14px">
+        <option value="pop">Популярные</option>
+        <option value="cheap">Сначала дешевле</option>
+        <option value="exp">Сначала дороже</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="grid" id="grid"></div>
+
+  <div class="build-banner">
+    <div>
+      <h2>Не нашёл свой вкус?</h2>
+      <p>Собери уникальный пельмень в конструкторе — тесто, начинка, форма, специи и подача на твой выбор.</p>
+    </div>
+    <a href="constructor.html" class="btn btn-primary btn-lg" style="position:relative; z-index:2">Открыть конструктор →</a>
+  </div>
+</div>
+
+<footer data-footer></footer>
+
+<script src="js/app.js"></script>
+<script src="js/products.js"></script>
+<script>
+  let cat='all', sort='pop';
+  const cats=document.getElementById('cats'), grid=document.getElementById('grid');
+  cats.innerHTML = CATEGORIES.map(c=>`<button class="chip ${c.key==='all'?'active':''}" data-cat="${c.key}">${c.label}</button>`).join('');
+
+  function spice(n){ return `<span class="spice" title="Острота">${[0,1,2].map(i=>`<i class="${i<n?'on':''}"></i>`).join('')}</span>`; }
+  function render(){
+    let list = cat==='all'?PRODUCTS.slice():PRODUCTS.filter(p=>p.cat===cat);
+    if(sort==='cheap') list.sort((a,b)=>a.price-b.price);
+    if(sort==='exp')   list.sort((a,b)=>b.price-a.price);
+    grid.innerHTML = list.map(p=>`
+      <article class="card prod" data-id="${p.id}">
+        <div class="food-ph"><div class="dumpling"></div><span class="tag">${p.tag}</span></div>
+        <div class="body">
+          <div class="top"><div class="title">${p.title}</div>${spice(p.spice)}</div>
+          <div class="desc">${p.desc}</div>
+          <div class="row">
+            <div class="price">${PelMen.money(p.price)} <small>/ ${p.weight}</small></div>
+            <button class="btn btn-primary btn-sm" data-add>В корзину</button>
+          </div>
+        </div>
+      </article>`).join('');
+  }
+  render();
+  cats.addEventListener('click',e=>{ const b=e.target.closest('[data-cat]'); if(!b)return;
+    cat=b.dataset.cat; cats.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.dataset.cat===cat)); render(); });
+  document.getElementById('sort').addEventListener('change',e=>{ sort=e.target.value; render(); });
+  grid.addEventListener('click',e=>{ const b=e.target.closest('[data-add]'); if(!b)return;
+    const p=PRODUCTS.find(x=>x.id===e.target.closest('.prod').dataset.id);
+    PelMen.addToCart({title:p.title, price:p.price, kind:'set', meta:p.tag}); });
+</script>
+</body>
+</html>

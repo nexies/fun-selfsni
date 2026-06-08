@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>О нас и производство — PelMen</title>
+<link rel="stylesheet" href="styles/base.css">
+<style>
+  .about-hero{ padding:64px 0 40px; }
+  .about-hero h1{ font-family:var(--serif); font-weight:600; font-size:clamp(2.8rem,6.4vw,5.6rem); line-height:.92; max-width:16ch; }
+  .about-hero h1 em{ font-style:italic; color:var(--tomato); }
+  .about-hero p{ font-size:1.18rem; color:var(--tx-dim); max-width:54ch; margin:24px 0 0; }
+
+  .big-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--r-xl); overflow:hidden; margin:20px 0 30px; }
+  .big-stats .s{ background:var(--ink-1); padding:34px 28px; }
+  .big-stats .s b{ font-family:var(--serif); font-size:3rem; line-height:1; display:block; }
+  .big-stats .s span{ font-size:.86rem; color:var(--tx-faint); }
+
+  .story{ display:grid; grid-template-columns:1fr 1fr; gap:54px; align-items:center; }
+  .story-visual{ aspect-ratio:4/5; border-radius:var(--r-xl); overflow:hidden; position:relative; }
+  .story h2{ font-family:var(--serif); font-size:clamp(2rem,4vw,3rem); line-height:1.02; margin-bottom:18px; }
+  .story p{ color:var(--tx-dim); margin:0 0 16px; }
+
+  .values{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .value{ padding:30px 26px; border-radius:var(--r-lg); background:var(--ink-1); border:1px solid var(--line); }
+  .value .ic{ width:54px; height:54px; border-radius:15px; background:rgba(201,162,75,.12); color:var(--tomato); display:grid; place-items:center; margin-bottom:18px; }
+  .value h3{ font-family:var(--serif); font-size:1.5rem; margin-bottom:8px; }
+  .value p{ color:var(--tx-dim); font-size:.92rem; }
+
+  .process-band{ background:var(--ink-1); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .proc-steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+  .pstep{ position:relative; }
+  .pstep .n{ font-family:var(--serif); font-size:3.4rem; color:var(--tomato); line-height:1; opacity:.85; }
+  .pstep h3{ font-family:var(--serif); font-size:1.4rem; margin:8px 0 8px; }
+  .pstep p{ color:var(--tx-dim); font-size:.9rem; }
+
+  .team{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .member{ }
+  .member .ph{ aspect-ratio:1/1.1; border-radius:var(--r-lg); overflow:hidden; background:radial-gradient(60% 50% at 50% 35%, #2a201a, #14100d); border:1px solid var(--line); position:relative; }
+  .member .ph::after{ content:""; position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); width:46%; aspect-ratio:1; border-radius:50%; background:radial-gradient(50% 50% at 45% 35%, #4a3a2e, #2a201a); }
+  .member b{ display:block; font-family:var(--serif); font-size:1.4rem; margin-top:14px; }
+  .member span{ color:var(--gold-soft); font-size:.85rem; }
+
+  .cta-final{ text-align:center; padding:80px 30px; border-radius:var(--r-xl); background:radial-gradient(80% 130% at 50% 0%, rgba(201,162,75,.18), var(--ink-1)); border:1px solid var(--line); }
+  .cta-final h2{ font-family:var(--serif); font-size:clamp(2.4rem,5vw,4rem); line-height:1; margin-bottom:22px; }
+
+  @media (max-width:900px){ .big-stats,.values,.proc-steps,.team{ grid-template-columns:1fr 1fr; } .story{ grid-template-columns:1fr; gap:30px; } }
+  @media (max-width:560px){ .big-stats,.values,.proc-steps,.team{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<header data-nav></header>
+
+<section class="about-hero">
+  <div class="wrap">
+    <span class="eyebrow">О нас</span>
+    <h1 style="margin-top:20px">Пельмени как <em>искусство</em>, а не полуфабрикат</h1>
+    <p>PelMen начался с семейного рецепта и упрямой идеи: пельмени могут быть авторской гастрономией. Мы лепим вручную, экспериментируем со вкусами и даём собрать свой рецепт.</p>
+  </div>
+</section>
+
+<section class="section tight" style="padding-top:10px">
+  <div class="wrap">
+    <div class="big-stats">
+      <div class="s"><b>2019</b><span>год основания</span></div>
+      <div class="s"><b>48</b><span>авторских начинок</span></div>
+      <div class="s"><b>120k+</b><span>заказов слеплено</span></div>
+      <div class="s"><b>4.9★</b><span>средняя оценка</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap story">
+    <div class="story-visual food-ph"><div class="dumpling"></div><span class="tag">Цех ручной лепки</span></div>
+    <div>
+      <span class="eyebrow">Наша история</span>
+      <h2 style="margin-top:16px">От бабушкиной кухни<br>до собственного цеха</h2>
+      <p>Всё началось с воскресных лепок всей семьёй. Когда друзья стали просить «те самые» пельмени на заказ, мы поняли: пора делиться. Сегодня у нас собственное производство, шеф-повара и одержимость деталями.</p>
+      <p>Мы не верим в заморозку «на месяцы вперёд». Каждый пельмень лепится под конкретный заказ из охлаждённых продуктов — поэтому вкус как дома, только смелее.</p>
+      <a href="menu.html" class="btn btn-ghost" style="margin-top:8px">Попробовать →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <span class="eyebrow">Принципы</span>
+    <h2 class="display" style="font-size:clamp(2rem,4vw,3rem); margin:14px 0 34px">Во что мы верим</h2>
+    <div class="values">
+      <div class="value"><div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9Z"/></svg></div><h3>Ручная лепка</h3><p>Каждый пельмень закрывается руками. Никаких конвейеров — только люди и навык.</p></div>
+      <div class="value"><div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v20M2 12h20"/></svg></div><h3>Честные продукты</h3><p>Охлаждённое мясо и рыба, настоящие специи, сезонные овощи. Без усилителей и сои в фарше.</p></div>
+      <div class="value"><div class="ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Свежесть под заказ</h3><p>Лепим после оформления и привозим за 60 минут. Заморозка — только по вашему желанию.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight process-band">
+  <div class="wrap">
+    <span class="eyebrow">Производство</span>
+    <h2 class="display" style="font-size:clamp(2rem,4vw,3rem); margin:14px 0 38px">Путь пельменя</h2>
+    <div class="proc-steps">
+      <div class="pstep"><div class="n">01</div><h3>Тесто</h3><p>Замешиваем утром на ледяной воде. Цветное — на натуральных пюре из шпината, свёклы, куркумы.</p></div>
+      <div class="pstep"><div class="n">02</div><h3>Фарш</h3><p>Рубим мясо ножом, а не в мясорубке — так сохраняется сочность и текстура.</p></div>
+      <div class="pstep"><div class="n">03</div><h3>Лепка</h3><p>Закрываем вручную под ваш заказ. Каждая форма — отдельный навык мастера.</p></div>
+      <div class="pstep"><div class="n">04</div><h3>Доставка</h3><p>Упаковываем в холод и привозим за 60 минут. Свежими, не заморозкой.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <span class="eyebrow">Команда</span>
+    <h2 class="display" style="font-size:clamp(2rem,4vw,3rem); margin:14px 0 34px">Кто всё это лепит</h2>
+    <div class="team">
+      <div class="member"><div class="ph"></div><b>Илья Котов</b><span>Шеф-повар и основатель</span></div>
+      <div class="member"><div class="ph"></div><b>Марина Дёмина</b><span>Технолог по начинкам</span></div>
+      <div class="member"><div class="ph"></div><b>Тимур Аль-Захир</b><span>Мастер ручной лепки</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="cta-final">
+      <span class="eyebrow center" style="justify-content:center">Готовы попробовать?</span>
+      <h2 class="display" style="margin-top:18px">Соберите пельмень,<br>который полюбите</h2>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:8px">
+        <a href="constructor.html" class="btn btn-primary btn-lg">Открыть конструктор →</a>
+        <a href="menu.html" class="btn btn-ghost btn-lg">Смотреть меню</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer data-footer></footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

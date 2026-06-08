@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PelMen — направление 2 · меню-первый</title>
+<link rel="stylesheet" href="styles/base.css">
+<style>
+  /* Direction 2: bold typographic + menu-first */
+  .hero2{ padding:70px 0 50px; }
+  .hero2-top{ display:grid; grid-template-columns:1.5fr 1fr; gap:40px; align-items:end; }
+  .hero2 h1{ font-family:var(--serif); font-weight:600; font-size:clamp(3.4rem,9vw,8rem); line-height:.86; letter-spacing:-.02em; }
+  .hero2 h1 em{ font-style:italic; color:var(--tomato); }
+  .hero2-right{ padding-bottom:14px; }
+  .hero2-right p{ font-size:1.08rem; color:var(--tx-dim); margin:0 0 22px; }
+  .hero2-cta{ display:flex; gap:12px; flex-wrap:wrap; }
+
+  .live-menu{ margin-top:48px; }
+  .cat-tabs{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:26px; }
+  .menu-rail{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  .mcard{ overflow:hidden; cursor:pointer; transition:.3s; display:flex; flex-direction:column; }
+  .mcard:hover{ transform:translateY(-5px); border-color:var(--gold-soft); }
+  .mcard .food-ph{ aspect-ratio:1/1; border-radius:0; }
+  .mcard .b{ padding:16px 16px 18px; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .mcard .t{ font-family:var(--serif); font-size:1.3rem; line-height:1.05; }
+  .mcard .d{ font-size:.82rem; color:var(--tx-dim); flex:1; }
+  .mcard .r{ display:flex; align-items:center; justify-content:space-between; margin-top:4px; }
+  .mcard .p{ font-weight:800; }
+  .mcard .add{ width:38px; height:38px; border-radius:50%; display:grid; place-items:center; background:var(--tomato); color:#fff; font-size:1.3rem; line-height:1; border:none; }
+
+  .band2{ margin-top:80px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--r-xl); overflow:hidden; }
+  .band2 .cell{ background:var(--ink-1); padding:40px 32px; }
+  .band2 .cell h3{ font-family:var(--serif); font-size:1.7rem; margin:14px 0 8px; }
+  .band2 .cell p{ font-size:.92rem; color:var(--tx-dim); }
+  .band2 .cell .ic{ width:46px; height:46px; border-radius:12px; background:rgba(201,162,75,.12); color:var(--tomato); display:grid; place-items:center; }
+  .band2 .cell.dark{ background:linear-gradient(120deg,var(--bordo-deep),var(--ink-2)); }
+
+  @media (max-width:860px){
+    .hero2-top{ grid-template-columns:1fr; gap:24px; }
+    .menu-rail{ grid-template-columns:1fr 1fr; }
+    .band2{ grid-template-columns:1fr; }
+  }
+  @media (max-width:560px){ .menu-rail{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<header data-nav></header>
+
+<section class="hero2">
+  <div class="wrap">
+    <div class="hero2-top">
+      <h1>Лепим<br>под <em>заказ.</em><br>Везём за час.</h1>
+      <div class="hero2-right">
+        <span class="eyebrow">PelMen · свежие, не заморозка</span>
+        <p style="margin-top:16px">48 авторских начинок и конструктор на тысячу комбинаций. Выбирай готовое или собирай своё — мы слепим и привезём горячими.</p>
+        <div class="hero2-cta">
+          <a href="constructor.html" class="btn btn-primary btn-lg">Собрать пельмень</a>
+          <a href="#menu" class="btn btn-ghost btn-lg">К меню ↓</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-menu" id="menu">
+      <div class="cat-tabs" id="cats"></div>
+      <div class="menu-rail" id="rail"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="band2">
+      <div class="cell dark">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v18M3 12h18"/></svg></div>
+        <h3>Конструктор</h3>
+        <p>Тесто, начинка, форма, специи, подача, упаковка и именной штамп. Более 1000 комбинаций.</p>
+        <a href="constructor.html" class="btn btn-ghost btn-sm" style="margin-top:18px">Открыть →</a>
+      </div>
+      <div class="cell">
+        <div class="ic" style="background:rgba(201,162,75,.14); color:var(--gold-soft)">✦</div>
+        <h3>Клуб PelMen</h3>
+        <p>Возвращаем до 12% баллами и оплачиваем ими до 30% заказа. Уровни, подарки, ранний доступ.</p>
+        <a href="bonus.html" class="btn btn-ghost btn-sm" style="margin-top:18px">Бонусы →</a>
+      </div>
+      <div class="cell">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12l4 4L21 4"/></svg></div>
+        <h3>Доставка 60 минут</h3>
+        <p>Лепим после заказа, варим — нет. Привозим сырыми и свежими в фирменной упаковке.</p>
+        <a href="about.html" class="btn btn-ghost btn-sm" style="margin-top:18px">О нас →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer data-footer></footer>
+
+<div class="dir-switch" style="position:fixed; left:18px; bottom:18px; z-index:120; display:flex; align-items:center; gap:8px; padding:8px 10px 8px 16px; background:rgba(12,9,8,.85); backdrop-filter:blur(10px); border:1px solid var(--line); border-radius:999px; box-shadow:var(--shadow-2); font-size:.8rem;">
+  <b style="color:var(--gold-soft); font-weight:700; margin-right:4px">Дизайн:</b>
+  <a href="index.html" style="width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:var(--tx-dim);border:1px solid var(--line)">1</a>
+  <a href="home-2.html" style="width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--tomato);color:#fff;border:1px solid var(--tomato)">2</a>
+  <a href="home-3.html" style="width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:var(--tx-dim);border:1px solid var(--line)">3</a>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/products.js"></script>
+<script>
+  let active='all';
+  const cats = document.getElementById('cats');
+  const rail = document.getElementById('rail');
+  cats.innerHTML = CATEGORIES.map(c=>`<button class="chip ${c.key==='all'?'active':''}" data-cat="${c.key}">${c.label}</button>`).join('');
+  function draw(){
+    const list = (active==='all'?PRODUCTS:PRODUCTS.filter(p=>p.cat===active)).slice(0,8);
+    rail.innerHTML = list.map(p=>`
+      <article class="card mcard" data-id="${p.id}">
+        <div class="food-ph"><div class="dumpling"></div><span class="tag">${p.tag}</span></div>
+        <div class="b">
+          <div class="t">${p.title}</div>
+          <div class="d">${p.desc}</div>
+          <div class="r"><span class="p">${PelMen.money(p.price)}</span><button class="add" data-add aria-label="Добавить">+</button></div>
+        </div>
+      </article>`).join('');
+  }
+  draw();
+  cats.addEventListener('click', e=>{ const b=e.target.closest('[data-cat]'); if(!b) return;
+    active=b.dataset.cat; cats.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active', c.dataset.cat===active)); draw(); });
+  rail.addEventListener('click', e=>{ const card=e.target.closest('.mcard'); if(!card) return;
+    const p=PRODUCTS.find(x=>x.id===card.dataset.id);
+    if(e.target.closest('[data-add]')){ e.stopPropagation(); PelMen.addToCart({title:p.title, price:p.price, kind:'set', meta:p.tag}); }
+    else location.href='menu.html'; });
+</script>
+</body>
+</html>

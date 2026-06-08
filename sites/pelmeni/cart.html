@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Корзина и оформление — PelMen</title>
+<link rel="stylesheet" href="styles/base.css">
+<style>
+  .page-head{ padding:56px 0 28px; }
+  .page-head h1{ font-family:var(--serif); font-weight:600; font-size:clamp(2.4rem,5vw,4rem); line-height:.96; }
+  .co-layout{ display:grid; grid-template-columns:1fr 400px; gap:34px; align-items:start; padding-bottom:90px; }
+
+  /* cart items */
+  .citem{ display:grid; grid-template-columns:96px 1fr auto; gap:18px; padding:20px; border:1px solid var(--line); border-radius:var(--r-lg); background:var(--ink-1); margin-bottom:14px; }
+  .citem .thumb{ width:96px; height:96px; border-radius:var(--r); overflow:hidden; position:relative; }
+  .citem .thumb .dumpling{ position:absolute; left:50%; top:54%; transform:translate(-50%,-50%); width:62%; aspect-ratio:1/.82; background:radial-gradient(40% 45% at 42% 30%, #f0ddc4, #d9bf9d 55%, #b9966c 100%); border-radius:60% 60% 52% 52%/70% 70% 48% 48%; box-shadow:inset 0 -8px 16px rgba(120,80,40,.4); }
+  .citem .ci-title{ font-family:var(--serif); font-size:1.4rem; line-height:1.1; }
+  .citem .ci-meta{ font-size:.84rem; color:var(--tx-dim); margin-top:5px; }
+  .citem .ci-config{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .citem .ci-config span{ font-size:.72rem; padding:3px 9px; border-radius:999px; background:var(--glass); border:1px solid var(--line); color:var(--tx-dim); }
+  .citem .ci-right{ display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between; gap:12px; }
+  .citem .ci-price{ font-weight:800; font-size:1.15rem; white-space:nowrap; }
+  .citem .remove{ background:none; border:none; color:var(--tx-faint); font-size:.82rem; }
+  .citem .remove:hover{ color:var(--tomato); }
+  .qty{ display:flex; align-items:center; gap:4px; background:var(--ink-2); border:1px solid var(--line); border-radius:999px; padding:3px; }
+  .qty button{ width:30px; height:30px; border-radius:50%; border:none; background:var(--glass); color:var(--cream); font-size:1.1rem; line-height:1; }
+  .qty button:hover{ background:var(--tomato); color:#fff; }
+  .qty span{ min-width:26px; text-align:center; font-weight:800; }
+
+  .empty{ text-align:center; padding:80px 20px; border:1px dashed var(--line); border-radius:var(--r-xl); }
+  .empty .em-d{ width:90px; height:90px; margin:0 auto 22px; border-radius:50%; background:radial-gradient(40% 45% at 42% 30%, #f0ddc4, #d9bf9d 55%, #b9966c 100%); box-shadow:inset 0 -10px 20px rgba(120,80,40,.4); }
+
+  /* summary */
+  .summary{ position:sticky; top:96px; background:linear-gradient(180deg,var(--ink-2),var(--ink-1)); border:1px solid var(--line); border-radius:var(--r-xl); padding:26px; box-shadow:var(--shadow-2); }
+  .sum-row{ display:flex; justify-content:space-between; align-items:center; padding:9px 0; font-size:.95rem; }
+  .sum-row.muted{ color:var(--tx-dim); }
+  .sum-row.total{ border-top:1px solid var(--line); margin-top:8px; padding-top:16px; font-size:1.05rem; }
+  .sum-row.total b{ font-family:var(--serif); font-size:1.9rem; }
+  .promo{ display:flex; gap:8px; margin:14px 0; }
+  .promo .input{ flex:1; }
+
+  .bonus-apply{ margin:16px 0; padding:16px; border-radius:var(--r); background:rgba(201,162,75,.08); border:1px solid rgba(201,162,75,.25); }
+  .bonus-apply .ba-top{ display:flex; justify-content:space-between; align-items:center; }
+  .bonus-apply label{ font-weight:700; color:var(--gold-soft); font-size:.92rem; }
+  .switch{ position:relative; width:46px; height:26px; }
+  .switch input{ display:none; }
+  .switch .track{ position:absolute; inset:0; border-radius:999px; background:var(--ink-3); border:1px solid var(--line); transition:.2s; }
+  .switch .track::after{ content:""; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:var(--cream); transition:.2s; }
+  .switch input:checked + .track{ background:var(--gold); }
+  .switch input:checked + .track::after{ transform:translateX(20px); }
+  .ba-info{ font-size:.8rem; color:var(--tx-dim); margin-top:8px; }
+
+  /* checkout form */
+  .checkout{ margin-top:26px; }
+  .checkout h2{ font-family:var(--serif); font-size:1.7rem; margin-bottom:18px; }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+  .form-grid .full{ grid-column:1/-1; }
+  .seg{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+
+  .success{ text-align:center; padding:70px 30px; }
+  .success .ck{ width:84px; height:84px; border-radius:50%; background:linear-gradient(180deg,var(--gold-soft),var(--gold)); display:grid; place-items:center; margin:0 auto 24px; color:#231a10; font-size:2.4rem; }
+  .success h2{ font-family:var(--serif); font-size:2.6rem; margin-bottom:14px; }
+
+  @media (max-width:900px){ .co-layout{ grid-template-columns:1fr; } .summary{ position:static; } }
+  @media (max-width:560px){ .form-grid{ grid-template-columns:1fr; } .citem{ grid-template-columns:72px 1fr; } .citem .ci-right{ grid-column:1/-1; flex-direction:row; align-items:center; } .citem .thumb{ width:72px; height:72px; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<header data-nav></header>
+
+<div class="wrap page-head">
+  <span class="eyebrow">Шаг к ужину</span>
+  <h1 style="margin-top:14px">Корзина и оформление</h1>
+</div>
+
+<div class="wrap">
+  <div id="root"></div>
+</div>
+
+<footer data-footer></footer>
+
+<script src="js/app.js"></script>
+<script>
+const root=document.getElementById('root');
+const cfgLabels={flour:'Мука',doughColor:'Тесто',doughAdd:'Добавки',protein:'Начинка',addins:'В начинку',spice:'Специи',shape:'Форма',size:'Размер',cook:'Готовка',serve:'Подача',sauce:'Соус',persona:'Оформление',stamp:'Штамп',pack:'Упаковка'};
+const state={ useBonus:false, promo:0, delivery:'courier' };
+
+function configChips(cfg){
+  if(!cfg) return '';
+  const chips=[];
+  Object.keys(cfg).forEach(k=>{
+    let v=cfg[k]; if(Array.isArray(v)){ if(!v.length) return; v=v.join(', '); }
+    if(!v) return;
+    chips.push(`<span>${cfgLabels[k]||k}: ${v}</span>`);
+  });
+  return `<div class="ci-config">${chips.join('')}</div>`;
+}
+
+function render(){
+  const cart=PelMen.store.cart;
+  if(!cart.length){
+    root.innerHTML=`<div class="empty"><div class="em-d"></div>
+      <h2 style="font-family:var(--serif);font-size:2rem;margin-bottom:10px">Корзина пуста</h2>
+      <p class="muted" style="margin-bottom:24px">Самое время собрать свой идеальный пельмень.</p>
+      <a href="constructor.html" class="btn btn-primary btn-lg">Открыть конструктор →</a>
+      <a href="menu.html" class="btn btn-ghost btn-lg" style="margin-left:10px">К меню</a></div>`;
+    return;
+  }
+  const subtotal=PelMen.cartTotal();
+  const delivery = subtotal>=1500?0:199;
+  const maxBonus = Math.min(PelMen.store.bonus, Math.floor(subtotal*PelMen.MAX_PAY));
+  const bonusUsed = state.useBonus?maxBonus:0;
+  const promoCut = state.promo;
+  const total = Math.max(0, subtotal + delivery - bonusUsed - promoCut);
+  const earn = Math.round(total*PelMen.EARN);
+
+  root.innerHTML=`
+  <div class="co-layout">
+    <div>
+      <div id="items">${cart.map(it=>`
+        <div class="citem" data-id="${it.id}">
+          <div class="thumb"><div class="dumpling"></div></div>
+          <div>
+            <div class="ci-title">${it.title}</div>
+            <div class="ci-meta">${it.meta||(it.kind==='custom'?'Собрано в конструкторе':'Готовый набор')}</div>
+            ${configChips(it.config)}
+          </div>
+          <div class="ci-right">
+            <div class="ci-price">${PelMen.money(it.price*it.qty)}</div>
+            <div class="qty"><button data-q="-1">–</button><span>${it.qty}</span><button data-q="1">+</button></div>
+            <button class="remove" data-remove>Удалить</button>
+          </div>
+        </div>`).join('')}
+      </div>
+      <a href="menu.html" class="btn btn-ghost btn-sm" style="margin-top:6px">← Продолжить выбор</a>
+
+      <div class="checkout">
+        <h2>Доставка и оплата</h2>
+        <div class="seg">
+          <button class="chip ${state.delivery==='courier'?'active':''}" data-del="courier">🛵 Курьером · 60 мин</button>
+          <button class="chip ${state.delivery==='pickup'?'active':''}" data-del="pickup">🏠 Самовывоз</button>
+        </div>
+        <div class="form-grid" style="margin-top:14px">
+          <div class="field"><label>Имя</label><input class="input" id="f-name" placeholder="Ваше имя"></div>
+          <div class="field"><label>Телефон</label><input class="input" id="f-phone" placeholder="+7 ___ ___-__-__"></div>
+          <div class="field full" id="addr-wrap"><label>Адрес доставки</label><input class="input" id="f-addr" placeholder="Улица, дом, квартира"></div>
+          <div class="field"><label>Дата</label><input class="input" type="date" id="f-date"></div>
+          <div class="field"><label>Время</label>
+            <select class="select" id="f-time"><option>Как можно скорее</option><option>12:00–14:00</option><option>14:00–16:00</option><option>18:00–20:00</option><option>20:00–22:00</option></select>
+          </div>
+          <div class="field full"><label>Комментарий к заказу</label><textarea class="textarea" id="f-note" placeholder="Код домофона, пожелания к лепке…" style="min-height:90px"></textarea></div>
+        </div>
+        <div class="seg" style="margin-top:6px">
+          <span class="muted" style="font-size:.85rem; align-self:center; margin-right:6px">Оплата:</span>
+          <button class="chip active" data-pay="card">Картой онлайн</button>
+          <button class="chip" data-pay="cash">При получении</button>
+          <button class="chip" data-pay="sbp">СБП</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="summary">
+      <h2 style="font-family:var(--serif);font-size:1.6rem;margin-bottom:12px">Ваш заказ</h2>
+      <div class="sum-row muted"><span>Товары (${PelMen.cartCount()} шт.)</span><span>${PelMen.money(subtotal)}</span></div>
+      <div class="sum-row muted"><span>Доставка</span><span>${delivery?PelMen.money(delivery):'Бесплатно'}</span></div>
+      ${promoCut?`<div class="sum-row muted" style="color:var(--gold-soft)"><span>Промокод</span><span>−${PelMen.money(promoCut)}</span></div>`:''}
+      ${bonusUsed?`<div class="sum-row muted" style="color:var(--gold-soft)"><span>Списано баллов</span><span>−${PelMen.money(bonusUsed)}</span></div>`:''}
+
+      <div class="promo">
+        <input class="input" id="promo" placeholder="Промокод (PELMEN10)">
+        <button class="btn btn-ghost btn-sm" id="applyPromo">ОК</button>
+      </div>
+
+      <div class="bonus-apply">
+        <div class="ba-top">
+          <label>Списать баллы</label>
+          <span class="switch"><input type="checkbox" id="useBonus" ${state.useBonus?'checked':''}><span class="track"></span></span>
+        </div>
+        <div class="ba-info">Доступно <b class="gold">${PelMen.fmt(PelMen.store.bonus)}</b> баллов. Можно оплатить до 30% — <b>${PelMen.fmt(maxBonus)}</b> ₽.</div>
+      </div>
+
+      <div class="sum-row total"><span>Итого</span><b>${PelMen.money(total)}</b></div>
+      <div class="sum-row muted" style="color:var(--gold-soft); padding-top:0"><span>Начислим баллов</span><span>+${PelMen.fmt(earn)}</span></div>
+
+      <button class="btn btn-primary btn-block btn-lg" id="placeOrder" style="margin-top:16px">Оформить за ${PelMen.money(total)}</button>
+      <p class="faint" style="font-size:.78rem; text-align:center; margin-top:12px">Нажимая кнопку, вы соглашаетесь с условиями оферты</p>
+    </aside>
+  </div>`;
+
+  wire(total, bonusUsed, earn);
+}
+
+function wire(total, bonusUsed, earn){
+  document.querySelectorAll('.citem').forEach(el=>{
+    const id=el.dataset.id;
+    el.querySelector('.qty').addEventListener('click',e=>{ const b=e.target.closest('[data-q]'); if(!b)return;
+      const it=PelMen.store.cart.find(x=>x.id===id); PelMen.setQty(id, it.qty+parseInt(b.dataset.q)); render(); });
+    el.querySelector('[data-remove]').addEventListener('click',()=>{ PelMen.removeItem(id); render(); });
+  });
+  document.querySelectorAll('[data-del]').forEach(b=> b.addEventListener('click',()=>{ state.delivery=b.dataset.del; render();
+    const aw=document.getElementById('addr-wrap'); }));
+  document.querySelectorAll('[data-pay]').forEach(b=> b.addEventListener('click',()=>{ document.querySelectorAll('[data-pay]').forEach(x=>x.classList.remove('active')); b.classList.add('active'); }));
+  const ub=document.getElementById('useBonus'); if(ub) ub.addEventListener('change',e=>{ state.useBonus=e.target.checked; render(); });
+  const ap=document.getElementById('applyPromo'); if(ap) ap.addEventListener('click',()=>{
+    const v=document.getElementById('promo').value.trim().toUpperCase();
+    if(v==='PELMEN10'){ state.promo=Math.round(PelMen.cartTotal()*0.1); PelMen.toast('Промокод применён: −10%','gold'); render(); }
+    else if(v){ PelMen.toast('Промокод не найден'); }
+  });
+  // hide address for pickup
+  const aw=document.getElementById('addr-wrap'); if(aw) aw.style.display = state.delivery==='pickup'?'none':'';
+
+  document.getElementById('placeOrder').addEventListener('click',()=>{
+    const name=document.getElementById('f-name').value.trim();
+    const phone=document.getElementById('f-phone').value.trim();
+    if(!name||!phone){ PelMen.toast('Заполните имя и телефон'); document.getElementById(name?'f-phone':'f-name').focus(); return; }
+    if(state.delivery==='courier' && !document.getElementById('f-addr').value.trim()){ PelMen.toast('Укажите адрес доставки'); return; }
+    // award & deduct bonus
+    PelMen.store.bonus = PelMen.store.bonus - bonusUsed + earn;
+    PelMen.clearCart();
+    showSuccess(name, total, earn);
+  });
+}
+
+function showSuccess(name, total, earn){
+  const num='PM-'+Math.floor(100000+Math.random()*900000);
+  root.innerHTML=`<div class="success">
+    <div class="ck">✓</div>
+    <h2>Заказ принят!</h2>
+    <p class="lead" style="max-width:46ch;margin:0 auto 8px">Спасибо, ${name}! Уже лепим ваши пельмени вручную. Номер заказа <b class="gold">${num}</b>.</p>
+    <p class="muted" style="margin-bottom:6px">Сумма: <b>${PelMen.money(total)}</b> · начислено <b class="gold">+${PelMen.fmt(earn)}</b> баллов</p>
+    <p class="faint" style="margin-bottom:30px">Мы позвоним для подтверждения в течение 5 минут.</p>
+    <a href="menu.html" class="btn btn-primary btn-lg">Заказать ещё</a>
+    <a href="bonus.html" class="btn btn-ghost btn-lg" style="margin-left:10px">Мои баллы</a>
+  </div>`;
+}
+
+render();
+</script>
+</body>
+</html>

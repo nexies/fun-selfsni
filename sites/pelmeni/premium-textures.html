@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PelMen — премиальные текстуры</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Manrope',system-ui,sans-serif;
+  --tech:'Space Grotesk',var(--sans);
+}
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{ margin:0; font-family:var(--sans); background:#08060a; color:#eee; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; }
+
+/* ===== Top chrome ===== */
+.topbar{ position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:20px; padding:16px 30px; background:rgba(8,6,10,.7); backdrop-filter:blur(14px); border-bottom:1px solid rgba(255,255,255,.07); }
+.topbar .home{ font-family:var(--serif); font-size:1.3rem; font-weight:700; opacity:.8; }
+.topbar .home:hover{ opacity:1; }
+.topbar .ttl{ font-size:.82rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.4); }
+.switcher{ margin-left:auto; display:flex; gap:4px; padding:5px; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); }
+.switcher button{ padding:9px 18px; border-radius:999px; border:none; background:transparent; color:rgba(255,255,255,.55); font-weight:700; font-size:.86rem; letter-spacing:.02em; transition:.25s; }
+.switcher button.active{ background:#fff; color:#111; }
+
+/* ===== Stage ===== */
+.stage{ position:relative; min-height:calc(100vh - 65px); transition:background .6s ease; overflow:hidden; }
+.frame{ max-width:1180px; margin:0 auto; padding:70px 36px 90px; position:relative; z-index:2; }
+.lede{ font-size:.78rem; letter-spacing:.34em; text-transform:uppercase; margin-bottom:26px; }
+.hero{ display:grid; grid-template-columns:1.15fr .85fr; gap:54px; align-items:center; }
+.hero h1{ font-family:var(--serif); font-weight:600; font-size:clamp(3rem,6.5vw,5.8rem); line-height:.94; letter-spacing:-.01em; margin:0 0 22px; }
+.hero h1 em{ font-style:italic; }
+.hero p{ font-size:1.12rem; line-height:1.6; max-width:42ch; margin:0 0 30px; }
+.price-line{ display:flex; align-items:baseline; gap:14px; margin-bottom:30px; }
+.price-line .p{ font-family:var(--serif); font-size:2.6rem; }
+.price-line .u{ font-size:.84rem; letter-spacing:.18em; text-transform:uppercase; opacity:.5; }
+.cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+.btn{ position:relative; display:inline-flex; align-items:center; gap:.6em; padding:16px 30px; border-radius:999px; font-weight:700; font-size:.95rem; border:1px solid transparent; overflow:hidden; transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s, border-color .3s, background .3s, color .3s; }
+.btn:active{ transform:translateY(1px); }
+
+/* card */
+.card{ position:relative; border-radius:26px; overflow:hidden; transition:transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .4s; }
+.card .visual{ aspect-ratio:1/.82; position:relative; display:grid; place-items:center; overflow:hidden; }
+.dumpling{ width:58%; aspect-ratio:1/.82; border-radius:60% 60% 52% 52%/70% 70% 48% 48%; background:radial-gradient(40% 45% at 42% 30%, #f3e2c9, #ddc39f 52%, #b9966c 100%); box-shadow:inset 0 -14px 30px rgba(120,80,40,.5), inset 0 8px 18px rgba(255,255,255,.45), 0 24px 40px -14px rgba(0,0,0,.7); position:relative; }
+.dumpling::before{ content:""; position:absolute; inset:0; border-radius:inherit; background:repeating-linear-gradient(95deg, transparent 0 14px, rgba(150,100,55,.22) 14px 16px); -webkit-mask:radial-gradient(60% 70% at 50% 38%, #000 58%, transparent 78%); mask:radial-gradient(60% 70% at 50% 38%, #000 58%, transparent 78%); }
+.card .body{ padding:24px 26px 26px; }
+.card .c-tag{ font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; margin-bottom:10px; }
+.card .c-name{ font-family:var(--serif); font-size:1.9rem; line-height:1.05; }
+.card .c-price{ white-space:nowrap; }
+.card .c-row{ display:flex; align-items:center; justify-content:space-between; margin-top:18px; }
+.card .c-price{ font-weight:800; font-size:1.2rem; }
+
+/* techniques footnote */
+.techniques{ margin-top:70px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.tq{ padding:22px 22px; border-radius:16px; }
+.tq .k{ font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; opacity:.5; margin-bottom:8px; }
+.tq .v{ font-family:var(--serif); font-size:1.25rem; line-height:1.15; margin-bottom:6px; }
+.tq p{ font-size:.85rem; line-height:1.5; opacity:.65; margin:0; }
+
+.hint{ text-align:center; margin-top:60px; font-size:.82rem; color:rgba(255,255,255,.4); }
+.hint span{ display:inline-block; padding:9px 18px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); }
+
+@media (max-width:880px){
+  .hero{ grid-template-columns:1fr; gap:34px; }
+  .techniques{ grid-template-columns:1fr; }
+}
+
+/* ============================================================
+   FINISH A — ATELIER  (foil + letterpress, warm haute-cuisine)
+   ============================================================ */
+.stage[data-finish="atelier"]{
+  --gold1:#efe2b9; --gold2:#b58f43; --gold3:#8a6a2f; --wine:#7a1f2b;
+  background:
+    radial-gradient(120% 80% at 50% -10%, #1c1411, #0c0807 60%),
+    #0c0807;
+  color:#efe6d6;
+}
+.stage[data-finish="atelier"]::before{ /* fine film grain */
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.stage[data-finish="atelier"]::after{ /* warm top glow */
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(60% 50% at 50% 0%, rgba(181,143,67,.14), transparent 60%);
+}
+[data-finish="atelier"] .lede{ color:transparent; background:linear-gradient(180deg,var(--gold1),var(--gold2)); -webkit-background-clip:text; background-clip:text; }
+[data-finish="atelier"] h1{ color:#f3ecdd; text-shadow:0 1px 0 rgba(0,0,0,.6), 0 -1px 0 rgba(255,255,255,.07); }
+[data-finish="atelier"] h1 em{ background:linear-gradient(180deg,var(--gold1),var(--gold2)); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow:none; }
+[data-finish="atelier"] .hero p{ color:rgba(239,230,214,.62); }
+[data-finish="atelier"] .price-line .p{ background:linear-gradient(180deg,var(--gold1),var(--gold2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+/* foil button with sheen */
+[data-finish="atelier"] .btn-primary{ background:linear-gradient(180deg,var(--gold1),var(--gold2)); color:#241a0c; box-shadow:0 14px 36px -12px rgba(181,143,67,.6), inset 0 1px 0 rgba(255,255,255,.5); }
+[data-finish="atelier"] .btn-primary::after{ content:""; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.85),transparent); transform:skewX(-18deg); animation:sheen 4.5s ease-in-out infinite; }
+@keyframes sheen{ 0%,55%{ left:-60%; } 80%,100%{ left:130%; } }
+[data-finish="atelier"] .btn-ghost{ color:#efe6d6; background:linear-gradient(180deg,rgba(239,226,185,.06),rgba(239,226,185,.02)) padding-box, linear-gradient(180deg,var(--gold1),var(--gold3)) border-box; border:1px solid transparent; }
+[data-finish="atelier"] .btn-ghost:hover{ background:linear-gradient(180deg,rgba(181,143,67,.16),rgba(181,143,67,.05)) padding-box, linear-gradient(180deg,var(--gold1),var(--gold2)) border-box; }
+[data-finish="atelier"] .card{ background:linear-gradient(180deg,#15100d,#0e0a08); border:1px solid transparent; border-image:linear-gradient(160deg,rgba(239,226,185,.5),rgba(138,106,47,.15) 50%,rgba(239,226,185,.3)) 1; box-shadow:0 30px 70px -30px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.06); }
+[data-finish="atelier"] .card:hover{ transform:translateY(-6px); }
+[data-finish="atelier"] .card .visual{ background:radial-gradient(70% 60% at 50% 35%, #2a1d14, #120c09); }
+[data-finish="atelier"] .card .visual::after{ content:""; position:absolute; inset:0; background:radial-gradient(40% 35% at 50% 60%, rgba(181,143,67,.18), transparent 70%); }
+[data-finish="atelier"] .card .c-tag{ color:var(--gold1); }
+[data-finish="atelier"] .card .c-price{ color:var(--gold1); }
+[data-finish="atelier"] .tq{ background:linear-gradient(180deg,rgba(255,255,255,.03),transparent); border:1px solid rgba(181,143,67,.18); }
+[data-finish="atelier"] .tq .v{ color:#f3ecdd; }
+
+/* ============================================================
+   FINISH B — OBSIDIAN (frosted glass + spotlight, hi-tech luxe)
+   ============================================================ */
+.stage[data-finish="obsidian"]{
+  --acc:#f0a85a; --chrome1:#ffffff; --chrome2:#9aa3af;
+  background:#06070a; color:#e8ecf2;
+  font-family:var(--sans);
+}
+.stage[data-finish="obsidian"]::before{ /* dot mesh grid */
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size:30px 30px;
+  -webkit-mask:radial-gradient(80% 70% at 50% 30%, #000 30%, transparent 75%);
+          mask:radial-gradient(80% 70% at 50% 30%, #000 30%, transparent 75%);
+}
+.stage[data-finish="obsidian"]::after{ /* cool ambient + cursor spotlight */
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(40rem 40rem at var(--mx,50%) var(--my,30%), rgba(240,168,90,.10), transparent 60%),
+    radial-gradient(70% 50% at 50% 0%, rgba(90,120,200,.10), transparent 60%),
+    radial-gradient(50% 40% at 85% 90%, rgba(240,168,90,.07), transparent 60%);
+}
+[data-finish="obsidian"] .lede{ font-family:var(--tech); color:var(--acc); letter-spacing:.3em; }
+[data-finish="obsidian"] h1{ font-family:var(--serif); background:linear-gradient(180deg,#ffffff 0%,#dfe5ee 42%,#9aa3af 60%,#eef2f7 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+[data-finish="obsidian"] h1 em{ font-style:italic; background:linear-gradient(180deg,var(--acc),#c97a32); -webkit-background-clip:text; background-clip:text; color:transparent; }
+[data-finish="obsidian"] .hero p{ color:rgba(232,236,242,.6); font-family:var(--tech); font-weight:400; }
+[data-finish="obsidian"] .price-line .p{ font-family:var(--serif); color:#fff; }
+[data-finish="obsidian"] .price-line .u{ font-family:var(--tech); }
+/* glass buttons */
+[data-finish="obsidian"] .btn-primary{ background:linear-gradient(180deg, rgba(240,168,90,.95), rgba(201,122,50,.95)); color:#1a1206; box-shadow:0 10px 40px -8px rgba(240,168,90,.5), inset 0 1px 0 rgba(255,255,255,.5); }
+[data-finish="obsidian"] .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 50px -8px rgba(240,168,90,.65), inset 0 1px 0 rgba(255,255,255,.6); }
+[data-finish="obsidian"] .btn-ghost{ background:rgba(255,255,255,.05); backdrop-filter:blur(16px); color:#e8ecf2; border:1px solid rgba(255,255,255,.18); box-shadow:inset 0 1px 0 rgba(255,255,255,.18); }
+[data-finish="obsidian"] .btn-ghost:hover{ background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.32); }
+/* frosted glass card with specular top edge */
+[data-finish="obsidian"] .card{ background:rgba(255,255,255,.045); backdrop-filter:blur(22px) saturate(130%); border:1px solid rgba(255,255,255,.12); box-shadow:0 30px 80px -30px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.22); }
+[data-finish="obsidian"] .card::before{ content:""; position:absolute; top:0; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent); }
+[data-finish="obsidian"] .card:hover{ transform:translateY(-6px); border-color:rgba(240,168,90,.4); box-shadow:0 40px 90px -30px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.28), 0 0 50px -10px rgba(240,168,90,.25); }
+[data-finish="obsidian"] .card .visual{ background:radial-gradient(70% 60% at 50% 35%, #161a22, #0a0c10); }
+[data-finish="obsidian"] .card .visual::after{ content:""; position:absolute; inset:0; background:radial-gradient(40% 35% at 50% 60%, rgba(240,168,90,.16), transparent 70%); }
+[data-finish="obsidian"] .card .c-tag{ font-family:var(--tech); color:var(--acc); }
+[data-finish="obsidian"] .card .c-name{ font-family:var(--serif); }
+[data-finish="obsidian"] .card .c-price{ color:#fff; }
+[data-finish="obsidian"] .tq{ background:rgba(255,255,255,.04); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.1); box-shadow:inset 0 1px 0 rgba(255,255,255,.12); }
+[data-finish="obsidian"] .tq .k{ font-family:var(--tech); color:var(--acc); opacity:1; }
+[data-finish="obsidian"] .tq .v{ font-family:var(--serif); color:#fff; }
+
+/* ============================================================
+   FINISH C — VELOUR (oxblood velvet + emboss, old-money)
+   ============================================================ */
+.stage[data-finish="velour"]{
+  --gold1:#e3cf9e; --gold2:#a9803f; --ox:#4a121b; --ox2:#2c0a10;
+  background:
+    radial-gradient(110% 80% at 50% 0%, #3a0e16, #1a070c 55%, #120509 100%);
+  color:#f0e3d6;
+}
+.stage[data-finish="velour"]::before{ /* velvet sheen bands + grain */
+  content:""; position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.5;
+  background:
+    repeating-linear-gradient(115deg, rgba(255,255,255,.012) 0 3px, transparent 3px 7px),
+    radial-gradient(80% 60% at 20% 20%, rgba(0,0,0,.35), transparent 60%),
+    radial-gradient(80% 60% at 90% 80%, rgba(0,0,0,.4), transparent 60%);
+}
+.stage[data-finish="velour"]::after{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-finish="velour"] .lede{ color:var(--gold1); letter-spacing:.36em; }
+[data-finish="velour"] h1{ font-family:var(--serif); color:#f6ecdf; text-shadow:0 2px 1px rgba(0,0,0,.55), 0 -1px 0 rgba(255,255,255,.06); }
+[data-finish="velour"] h1 em{ background:linear-gradient(180deg,var(--gold1),var(--gold2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+[data-finish="velour"] .hero p{ color:rgba(240,227,214,.6); }
+[data-finish="velour"] .price-line .p{ background:linear-gradient(180deg,var(--gold1),var(--gold2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+[data-finish="velour"] .btn-primary{ background:linear-gradient(180deg,var(--gold1),var(--gold2)); color:#2a1408; box-shadow:0 16px 40px -14px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.5); }
+[data-finish="velour"] .btn-primary:hover{ transform:translateY(-2px); }
+[data-finish="velour"] .btn-ghost{ background:linear-gradient(180deg,rgba(74,18,27,.6),rgba(44,10,16,.6)); color:#f0e3d6; border:1px solid rgba(227,207,158,.3); box-shadow:inset 0 1px 0 rgba(255,255,255,.08); }
+[data-finish="velour"] .btn-ghost:hover{ border-color:rgba(227,207,158,.55); }
+/* embossed velvet card */
+[data-finish="velour"] .card{ background:linear-gradient(160deg,#561620,#350c14 60%,#280910); border:1px solid rgba(227,207,158,.22); box-shadow:0 34px 80px -28px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.08), inset 0 0 60px rgba(0,0,0,.4); }
+[data-finish="velour"] .card:hover{ transform:translateY(-6px); }
+[data-finish="velour"] .card .visual{ background:radial-gradient(70% 60% at 50% 35%, #3a0f17, #1c070c); }
+[data-finish="velour"] .card .visual::after{ content:""; position:absolute; inset:0; background:radial-gradient(40% 35% at 50% 60%, rgba(227,207,158,.14), transparent 70%); }
+[data-finish="velour"] .card .c-tag{ color:var(--gold1); }
+[data-finish="velour"] .card .c-price{ color:var(--gold1); }
+[data-finish="velour"] .tq{ background:linear-gradient(160deg,rgba(86,22,32,.5),rgba(40,9,16,.5)); border:1px solid rgba(227,207,158,.2); box-shadow:inset 0 1px 0 rgba(255,255,255,.06); }
+[data-finish="velour"] .tq .v{ color:#f6ecdf; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="home">PelMen</a>
+  <span class="ttl">Премиальные текстуры · сравнение</span>
+  <div class="switcher" id="sw">
+    <button data-f="atelier" class="active">Atelier</button>
+    <button data-f="obsidian">Obsidian</button>
+    <button data-f="velour">Velour</button>
+  </div>
+</div>
+
+<div class="stage" id="stage" data-finish="atelier">
+  <div class="frame">
+    <div class="lede" id="lede">PelMen · Private Reserve</div>
+    <div class="hero">
+      <div>
+        <h1>Лосось<br>&amp; <em>трюфель</em></h1>
+        <p id="heroP">Дальневосточный лосось, чёрный трюфель и сливки в тончайшем тесте ручной раскатки. Лимитированная серия шефа.</p>
+        <div class="price-line"><span class="p">920&nbsp;₽</span><span class="u">за 400 г · 18 шт</span></div>
+        <div class="cta-row">
+          <button class="btn btn-primary">Заказать набор</button>
+          <button class="btn btn-ghost">В конструктор</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="visual"><div class="dumpling"></div></div>
+        <div class="body">
+          <div class="c-tag" id="cTag">Limited · Chef's selection</div>
+          <div class="c-name">Гребешок Хоккайдо</div>
+          <div class="c-row"><span style="opacity:.55; font-size:.9rem">400 г</span><span class="c-price">1&nbsp;240&nbsp;₽</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="techniques" id="tq"></div>
+    <div class="hint"><span>Переключайте направления вверху справа · наведите курсор на карточку</span></div>
+  </div>
+</div>
+
+<script>
+const FIN = {
+  atelier:{
+    lede:'PelMen · Private Reserve',
+    heroP:'Дальневосточный лосось, чёрный трюфель и сливки в тончайшем тесте ручной раскатки. Лимитированная серия шефа.',
+    cTag:'Limited · Chef\u2019s selection',
+    tq:[
+      ['Золотая фольга','Градиентное золото шампань→бронза','Тонкие линии и кнопки из «фольги» со световым бликом, скользящим по поверхности.'],
+      ['Тиснение','Letterpress на заголовках','Текст будто впечатан в поверхность — двойная тень даёт эффект оттиска.'],
+      ['Плёночное зерно','Тёплая микротекстура','Едва заметное зерно убирает «цифровую» плоскость, добавляя матовость бумаги.'],
+    ]
+  },
+  obsidian:{
+    lede:'PelMen / Signature Series',
+    heroP:'Лосось, чёрный трюфель и сливки. Тончайшее тесто, точная рецептура, лимитированный выпуск. Технологичная подача высокой кухни.',
+    cTag:'Limited / Chef selection',
+    tq:[
+      ['Матовое стекло','Frosted glass + блюр','Полупрозрачные панели с размытием фона — глубина и «дороговизна» техно-люкса.'],
+      ['Зеркальная кромка','Specular 1px highlight','Яркая световая линия по верхней грани карточки имитирует полированный металл.'],
+      ['Световое пятно','Spotlight за курсором','Мягкое свечение следует за мышью, оживляя сцену как витрина под софитом.'],
+    ]
+  },
+  velour:{
+    lede:'PelMen · Maison',
+    heroP:'Дальневосточный лосось, чёрный трюфель и сливки в тончайшем тесте ручной раскатки. Коллекция «Старого света».',
+    cTag:'Édition limitée',
+    tq:[
+      ['Бархат оксблад','Велюровые градиенты','Глубокий винный с тканевым отливом — текстура дорогого бархата, а не плоский фон.'],
+      ['Эмбоссинг','Выпуклые панели','Двойные тени и внутренний свет делают карточки рельефными, как тиснёная кожа.'],
+      ['Антикварное золото','Тёплые металлы','Приглушённое золото и виньетки создают атмосферу частного клуба «старых денег».'],
+    ]
+  }
+};
+const stage=document.getElementById('stage');
+function apply(f){
+  stage.dataset.finish=f;
+  const d=FIN[f];
+  document.getElementById('lede').textContent=d.lede;
+  document.getElementById('heroP').textContent=d.heroP;
+  document.getElementById('cTag').textContent=d.cTag;
+  document.getElementById('tq').innerHTML=d.tq.map(t=>`<div class="tq"><div class="k">${t[0]}</div><div class="v">${t[1]}</div><p>${t[2]}</p></div>`).join('');
+  document.querySelectorAll('#sw button').forEach(b=>b.classList.toggle('active',b.dataset.f===f));
+}
+document.getElementById('sw').addEventListener('click',e=>{ const b=e.target.closest('[data-f]'); if(b) apply(b.dataset.f); });
+apply('atelier');
+// cursor spotlight (obsidian)
+window.addEventListener('pointermove',e=>{
+  stage.style.setProperty('--mx',(e.clientX)+'px');
+  stage.style.setProperty('--my',(e.clientY-60)+'px');
+});
+</script>
+</body>
+</html>

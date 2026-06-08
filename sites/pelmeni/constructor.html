@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Конструктор пельменей — PelMen</title>
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/constructor.css">
+</head>
+<body>
+<div class="noise"></div>
+<header data-nav></header>
+
+<div class="wrap ct-head">
+  <div>
+    <span class="eyebrow">Конструктор</span>
+    <h1>Собери свой пельмень</h1>
+    <p>Тесто, начинка, форма, специи, подача и персонализация — больше тысячи комбинаций. Цена пересчитывается вживую.</p>
+  </div>
+</div>
+
+<!-- step nav -->
+<div class="step-nav" id="stepNav"></div>
+
+<div class="wrap ct-layout">
+  <!-- ======== LEFT: live preview ======== -->
+  <aside class="preview" id="preview">
+    <div class="preview-card">
+      <div class="plate">
+        <div class="big-dumpling" id="dumpling">
+          <span class="stamp" id="stamp"></span>
+        </div>
+        <div class="sauce-pool" id="saucePool"></div>
+      </div>
+      <div class="pv-name" id="pvName">Безымянный пельмень</div>
+      <div class="pv-tags" id="pvTags"></div>
+      <div class="pv-foot">
+        <div>
+          <div class="pv-label">Итого за порцию</div>
+          <div class="pv-price" id="pvPrice">—</div>
+          <div class="pv-bonus" id="pvBonus"></div>
+        </div>
+        <div class="qty" id="qty">
+          <button data-q="-1">–</button><span id="qtyVal">1</span><button data-q="1">+</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block btn-lg" id="addBtn" style="margin-top:16px">Добавить в корзину</button>
+      <button class="btn btn-ghost btn-block btn-sm" id="randomBtn" style="margin-top:10px">🎲 Удиви меня — случайный рецепт</button>
+    </div>
+  </aside>
+
+  <!-- ======== RIGHT: steps ======== -->
+  <main class="steps" id="steps"></main>
+</div>
+
+<footer data-footer></footer>
+
+<script src="js/app.js"></script>
+<script src="js/constructor-data.js"></script>
+<script src="js/constructor.js"></script>
+</body>
+</html>

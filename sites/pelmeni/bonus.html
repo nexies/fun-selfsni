@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бонусы и личный кабинет — PelMen</title>
+<link rel="stylesheet" href="styles/base.css">
+<style>
+  .page-head{ padding:56px 0 8px; }
+  .page-head h1{ font-family:var(--serif); font-weight:600; font-size:clamp(2.4rem,5vw,4rem); line-height:.96; }
+
+  .bonus-layout{ display:grid; grid-template-columns:1.1fr .9fr; gap:24px; padding:30px 0 50px; align-items:start; }
+
+  /* balance card */
+  .balance{ position:relative; border-radius:var(--r-xl); overflow:hidden; padding:34px; background:linear-gradient(135deg,var(--bordo) 0%, var(--bordo-deep) 60%, #1a0d10 100%); border:1px solid rgba(201,162,75,.3); box-shadow:var(--shadow-2); }
+  .balance::after{ content:""; position:absolute; right:-50px; top:-60px; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle,rgba(201,162,75,.35),transparent 70%); }
+  .balance .b-top{ display:flex; justify-content:space-between; align-items:center; position:relative; z-index:2; }
+  .balance .tier-badge{ display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:999px; background:rgba(201,162,75,.18); border:1px solid rgba(201,162,75,.4); color:var(--gold-soft); font-weight:700; font-size:.85rem; }
+  .balance .b-amount{ font-family:var(--serif); font-size:4.4rem; line-height:1; margin:22px 0 4px; position:relative; z-index:2; }
+  .balance .b-amount span{ font-size:1.4rem; color:var(--gold-soft); }
+  .balance .b-sub{ color:rgba(244,234,219,.7); position:relative; z-index:2; }
+  .progress{ margin-top:26px; position:relative; z-index:2; }
+  .progress .track{ height:10px; border-radius:999px; background:rgba(0,0,0,.35); overflow:hidden; }
+  .progress .fill{ height:100%; border-radius:999px; background:linear-gradient(90deg,var(--gold-soft),var(--gold)); width:49%; }
+  .progress .lbl{ display:flex; justify-content:space-between; font-size:.82rem; color:rgba(244,234,219,.7); margin-top:10px; }
+
+  .mini-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:20px; }
+  .mini-stat{ background:var(--ink-1); border:1px solid var(--line); border-radius:var(--r); padding:18px; }
+  .mini-stat b{ font-family:var(--serif); font-size:1.9rem; display:block; line-height:1; }
+  .mini-stat span{ font-size:.78rem; color:var(--tx-faint); }
+
+  .panel-box{ background:var(--ink-1); border:1px solid var(--line); border-radius:var(--r-lg); padding:26px; }
+  .panel-box h3{ font-family:var(--serif); font-size:1.5rem; margin-bottom:16px; }
+
+  /* tiers */
+  .tier-list{ display:grid; gap:12px; }
+  .tier-row{ display:flex; align-items:center; gap:16px; padding:16px; border-radius:var(--r); background:var(--glass); border:1px solid var(--line); }
+  .tier-row.cur{ border-color:var(--gold); background:rgba(201,162,75,.08); }
+  .tier-row .dot{ width:40px; height:40px; border-radius:50%; flex:none; display:grid; place-items:center; font-weight:800; }
+  .tier-row .t-info{ flex:1; }
+  .tier-row .t-info b{ font-size:1.05rem; }
+  .tier-row .t-info p{ font-size:.82rem; color:var(--tx-dim); margin:2px 0 0; }
+  .tier-row .t-pct{ font-weight:800; color:var(--gold-soft); }
+
+  /* history */
+  .history{ display:flex; flex-direction:column; }
+  .h-row{ display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--line-2); }
+  .h-row:last-child{ border:0; }
+  .h-row .h-l b{ font-weight:600; }
+  .h-row .h-l span{ display:block; font-size:.78rem; color:var(--tx-faint); }
+  .h-row .h-amt{ font-weight:800; font-variant-numeric:tabular-nums; }
+  .h-amt.plus{ color:#8fd19a; }
+  .h-amt.minus{ color:#ff9c8e; }
+
+  .perks{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  .perk{ padding:18px; border-radius:var(--r); background:var(--glass); border:1px solid var(--line); }
+  .perk .ic{ width:40px; height:40px; border-radius:11px; background:rgba(201,162,75,.14); color:var(--gold-soft); display:grid; place-items:center; margin-bottom:12px; }
+  .perk b{ font-size:.98rem; }
+  .perk p{ font-size:.82rem; color:var(--tx-dim); margin:4px 0 0; }
+
+  .referral{ display:flex; gap:10px; margin-top:14px; }
+  .ref-code{ flex:1; font-family:var(--serif); font-size:1.4rem; letter-spacing:.08em; padding:12px 18px; border-radius:var(--r); background:var(--ink-2); border:1px dashed var(--gold); color:var(--gold-soft); }
+
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:24px; padding-bottom:90px; }
+
+  @media (max-width:900px){ .bonus-layout, .grid-2{ grid-template-columns:1fr; } }
+  @media (max-width:560px){ .mini-stats{ grid-template-columns:1fr; } .perks{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<header data-nav></header>
+
+<div class="wrap page-head">
+  <span class="eyebrow">Клуб PelMen</span>
+  <h1 style="margin-top:14px">Личный кабинет</h1>
+</div>
+
+<div class="wrap">
+  <div class="bonus-layout">
+    <!-- balance + tiers -->
+    <div>
+      <div class="balance">
+        <div class="b-top">
+          <div>
+            <div class="b-sub" style="font-size:.85rem; letter-spacing:.1em; text-transform:uppercase">Доступно баллов</div>
+          </div>
+          <span class="tier-badge">✦ Уровень: Серебро</span>
+        </div>
+        <div class="b-amount"><span data-bonus>480</span> <span>баллов</span></div>
+        <div class="b-sub">1 балл = 1 ₽ · оплачивайте до 30% любого заказа</div>
+        <div class="progress">
+          <div class="track"><div class="fill" id="tierFill"></div></div>
+          <div class="lbl"><span>Серебро · 9% кэшбэк</span><span id="toGold">до Золота — 15 180 ₽</span></div>
+        </div>
+      </div>
+
+      <div class="mini-stats">
+        <div class="mini-stat"><b id="ms-orders">7</b><span>заказов</span></div>
+        <div class="mini-stat"><b id="ms-spent">14 820 ₽</b><span>потрачено</span></div>
+        <div class="mini-stat"><b class="gold">+9%</b><span>текущий кэшбэк</span></div>
+      </div>
+
+      <div class="panel-box" style="margin-top:24px">
+        <h3>Уровни клуба</h3>
+        <div class="tier-list">
+          <div class="tier-row"><div class="dot" style="background:#3a2a18;color:#d9bf9d">Т</div><div class="t-info"><b>Тесто</b><p>Старт для всех новых гостей</p></div><div class="t-pct">+7%</div></div>
+          <div class="tier-row cur"><div class="dot" style="background:linear-gradient(180deg,#cfd4da,#9aa0a8);color:#23262b">С</div><div class="t-info"><b>Серебро · вы здесь</b><p>от 10 000 ₽ за всё время</p></div><div class="t-pct">+9%</div></div>
+          <div class="tier-row"><div class="dot" style="background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#231a10">З</div><div class="t-info"><b>Золото</b><p>от 30 000 ₽ · подарки и ранний доступ</p></div><div class="t-pct">+12%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- how it works + history -->
+    <div>
+      <div class="panel-box">
+        <h3>Как это работает</h3>
+        <div class="steps" style="display:grid;gap:14px">
+          <div style="display:flex;gap:14px"><span style="font-family:var(--serif);font-size:1.4rem;color:var(--tomato)">01</span><div><b>Копите</b><p class="muted" style="font-size:.88rem;margin:2px 0 0">Возвращаем 7–12% баллами с каждого заказа в зависимости от уровня.</p></div></div>
+          <div style="display:flex;gap:14px"><span style="font-family:var(--serif);font-size:1.4rem;color:var(--tomato)">02</span><div><b>Оплачивайте</b><p class="muted" style="font-size:.88rem;margin:2px 0 0">Списывайте баллы и оплачивайте ими до 30% следующего заказа.</p></div></div>
+          <div style="display:flex;gap:14px"><span style="font-family:var(--serif);font-size:1.4rem;color:var(--tomato)">03</span><div><b>Растите</b><p class="muted" style="font-size:.88rem;margin:2px 0 0">Чем больше заказов — тем выше уровень и приятнее кэшбэк.</p></div></div>
+        </div>
+      </div>
+
+      <div class="panel-box" style="margin-top:24px">
+        <h3>Приведи друга</h3>
+        <p class="muted" style="font-size:.9rem; margin-top:-6px">Друг получает 300 баллов на первый заказ, вы — 300 баллов после его покупки.</p>
+        <div class="referral">
+          <div class="ref-code" id="refCode">PELMEN-А7К2</div>
+          <button class="btn btn-gold" id="copyRef">Копировать</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel-box">
+      <h3>История баллов</h3>
+      <div class="history">
+        <div class="h-row"><div class="h-l"><b>Заказ PM-481204</b><span>2 июня · Лосось с трюфелем</span></div><div class="h-amt plus">+64</div></div>
+        <div class="h-row"><div class="h-l"><b>Списание баллов</b><span>2 июня · оплата заказа</span></div><div class="h-amt minus">−150</div></div>
+        <div class="h-row"><div class="h-l"><b>Бонус за друга</b><span>28 мая · Михаил Р.</span></div><div class="h-amt plus">+300</div></div>
+        <div class="h-row"><div class="h-l"><b>Заказ PM-479833</b><span>21 мая · Сибирские ×2</span></div><div class="h-amt plus">+97</div></div>
+        <div class="h-row"><div class="h-l"><b>День рождения 🎂</b><span>14 мая · подарок клуба</span></div><div class="h-amt plus">+500</div></div>
+      </div>
+    </div>
+
+    <div class="panel-box">
+      <h3>Привилегии уровня</h3>
+      <div class="perks">
+        <div class="perk"><div class="ic">%</div><b>Кэшбэк 9%</b><p>Баллами с каждого заказа</p></div>
+        <div class="perk"><div class="ic">🎂</div><b>Подарок на ДР</b><p>500 баллов в день рождения</p></div>
+        <div class="perk"><div class="ic">🚀</div><b>Ранний доступ</b><p>К сезонным начинкам</p></div>
+        <div class="perk"><div class="ic">🛵</div><b>Бесплатная доставка</b><p>От 1 500 ₽ в заказе</p></div>
+      </div>
+      <a href="constructor.html" class="btn btn-primary btn-block btn-lg" style="margin-top:18px">Собрать пельмень и заработать баллы →</a>
+    </div>
+  </div>
+</div>
+
+<footer data-footer></footer>
+
+<script src="js/app.js"></script>
+<script>
+  // tier progress based on spend toward gold (30000)
+  const spent=PelMen.store.user.spent||14820;
+  document.getElementById('tierFill').style.width=Math.min(100,(spent/30000*100)).toFixed(0)+'%';
+  document.getElementById('toGold').textContent='до Золота — '+PelMen.money(Math.max(0,30000-spent));
+  document.getElementById('ms-spent').textContent=PelMen.money(spent);
+  document.getElementById('copyRef').addEventListener('click',()=>{
+    const code=document.getElementById('refCode').textContent;
+    navigator.clipboard?.writeText(code);
+    PelMen.toast('Промокод скопирован: '+code,'gold');
+  });
+</script>
+</body>
+</html>

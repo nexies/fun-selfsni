@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PelMen — домашние пельмени ручной лепки</title>
+<link rel="stylesheet" href="styles/base.css">
+<style>
+  /* ---------- HERO (Direction 1: cinematic editorial) ---------- */
+  .hero{ position:relative; padding:64px 0 90px; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns:1.06fr .94fr; gap:50px; align-items:center; }
+  .hero h1{ font-family:var(--serif); font-weight:600; font-size:clamp(3.2rem,7vw,6.4rem); line-height:.92; letter-spacing:-.015em; }
+  .hero h1 .it{ font-style:italic; color:var(--tomato); }
+  .hero h1 .out{ -webkit-text-stroke:1.4px var(--gold-soft); color:transparent; }
+  .hero-sub{ font-size:1.18rem; color:var(--tx-dim); max-width:46ch; margin:26px 0 34px; }
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; }
+  .hero-stats{ display:flex; gap:34px; margin-top:46px; padding-top:28px; border-top:1px solid var(--line); }
+  .hero-stats .s b{ font-family:var(--serif); font-size:2.2rem; color:var(--cream); display:block; line-height:1; }
+  .hero-stats .s span{ font-size:.84rem; color:var(--tx-faint); letter-spacing:.04em; }
+
+  .hero-visual{ position:relative; aspect-ratio:1/1.04; }
+  .hero-plate{
+    position:absolute; inset:0; border-radius:50%;
+    background:radial-gradient(60% 60% at 50% 42%, #2a1a13, #140d09 72%);
+    box-shadow:inset 0 0 0 1px var(--line), inset 0 -30px 80px rgba(0,0,0,.6), var(--shadow-2);
+    overflow:hidden;
+  }
+  .hero-plate::after{ content:""; position:absolute; inset:0; background:radial-gradient(45% 40% at 50% 55%, rgba(201,162,75,.28), transparent 70%); }
+  .float-dumpling{
+    position:absolute; border-radius:62% 62% 52% 52%/72% 72% 48% 48%;
+    background:radial-gradient(40% 45% at 42% 30%, #f3e2c9, #ddc39f 52%, #b9966c 100%);
+    box-shadow:inset 0 -12px 26px rgba(120,80,40,.5), inset 0 7px 16px rgba(255,255,255,.45), 0 22px 40px -14px rgba(0,0,0,.75);
+    animation:bob 6s ease-in-out infinite;
+  }
+  .float-dumpling::before{
+    content:""; position:absolute; inset:0; border-radius:inherit;
+    background:repeating-linear-gradient(95deg, transparent 0 14px, rgba(150,100,55,.22) 14px 16px);
+    -webkit-mask:radial-gradient(60% 70% at 50% 38%, #000 58%, transparent 76%); mask:radial-gradient(60% 70% at 50% 38%, #000 58%, transparent 76%);
+  }
+  @keyframes bob{ 0%,100%{ transform:translateY(0) rotate(var(--rot,0)); } 50%{ transform:translateY(-14px) rotate(var(--rot,0)); } }
+  .ring-label{
+    position:absolute; inset:-2%; border-radius:50%; pointer-events:none;
+    animation:spin 40s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .ring-label text{ fill:var(--gold-soft); font-family:var(--sans); font-size:7px; font-weight:700; letter-spacing:.42em; text-transform:uppercase; }
+
+  /* ---------- Marquee strip ---------- */
+  .strip{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--ink-1); padding:18px 0; overflow:hidden; }
+  .marquee{ display:flex; gap:46px; white-space:nowrap; animation:scroll 32s linear infinite; width:max-content; }
+  .marquee span{ font-family:var(--serif); font-size:1.5rem; color:var(--tx-dim); display:inline-flex; align-items:center; gap:46px; }
+  .marquee span::after{ content:"✦"; color:var(--tomato); font-size:1rem; }
+  @keyframes scroll{ to{ transform:translateX(-50%); } }
+
+  /* ---------- Section heading ---------- */
+  .sec-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:48px; flex-wrap:wrap; }
+  .sec-head h2{ font-family:var(--serif); font-weight:600; font-size:clamp(2.4rem,4.4vw,3.6rem); line-height:1; max-width:18ch; }
+
+  /* ---------- Product grid ---------- */
+  .prod-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .prod{ display:flex; flex-direction:column; overflow:hidden; transition:transform .3s, border-color .3s; cursor:pointer; }
+  .prod:hover{ transform:translateY(-6px); border-color:var(--gold-soft); }
+  .prod .food-ph{ aspect-ratio:4/3; border-radius:0; }
+  .prod .body{ padding:22px 22px 24px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .prod .title{ font-family:var(--serif); font-size:1.6rem; line-height:1.05; }
+  .prod .desc{ font-size:.9rem; color:var(--tx-dim); flex:1; }
+  .prod .row{ display:flex; align-items:center; justify-content:space-between; margin-top:6px; }
+  .prod .price{ font-weight:800; font-size:1.15rem; }
+  .prod .price small{ color:var(--tx-faint); font-weight:600; font-size:.78rem; }
+
+  /* ---------- Feature split: constructor teaser ---------- */
+  .split{ display:grid; grid-template-columns:1fr 1fr; gap:54px; align-items:center; }
+  .split-visual{ position:relative; aspect-ratio:1/1; border-radius:var(--r-xl); overflow:hidden; }
+  .builder-stack{ position:absolute; inset:0; display:grid; place-items:center; }
+  .opt-bubble{
+    position:absolute; padding:9px 15px; border-radius:999px; background:rgba(12,9,8,.7); backdrop-filter:blur(8px);
+    border:1px solid var(--line); font-size:.82rem; font-weight:600; color:var(--cream); box-shadow:var(--shadow-1);
+    animation:bob 7s ease-in-out infinite;
+  }
+  .steps{ display:grid; gap:14px; margin-top:30px; }
+  .step{ display:flex; gap:16px; align-items:flex-start; }
+  .step .n{ font-family:var(--serif); font-size:1.6rem; color:var(--tomato); width:34px; flex:none; line-height:1.2; }
+  .step b{ display:block; font-size:1.02rem; }
+  .step p{ margin:2px 0 0; font-size:.92rem; color:var(--tx-dim); }
+
+  /* ---------- Bonus band ---------- */
+  .bonus-band{ position:relative; border-radius:var(--r-xl); overflow:hidden; background:linear-gradient(120deg,var(--bordo-deep),var(--ink-2) 70%); border:1px solid var(--line); padding:60px; }
+  .bonus-band::after{ content:""; position:absolute; right:-60px; top:-60px; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle,rgba(201,162,75,.3),transparent 70%); }
+  .bonus-tiers{ display:flex; gap:14px; margin-top:28px; flex-wrap:wrap; }
+  .tier{ flex:1; min-width:160px; padding:20px; border-radius:var(--r); background:var(--glass); border:1px solid var(--line); }
+  .tier .t-name{ font-family:var(--serif); font-size:1.4rem; }
+  .tier .t-pct{ color:var(--gold-soft); font-weight:800; font-size:.9rem; margin-top:4px; }
+  .tier p{ font-size:.84rem; color:var(--tx-dim); margin:8px 0 0; }
+
+  /* ---------- How / process ---------- */
+  .proc-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .proc{ padding:28px 24px; border-radius:var(--r-lg); background:var(--ink-1); border:1px solid var(--line); }
+  .proc .ic{ width:50px; height:50px; border-radius:14px; display:grid; place-items:center; background:rgba(201,162,75,.12); color:var(--tomato); margin-bottom:18px; }
+  .proc h3{ font-family:var(--serif); font-size:1.35rem; margin-bottom:8px; }
+  .proc p{ font-size:.9rem; color:var(--tx-dim); }
+
+  /* ---------- CTA ---------- */
+  .cta-final{ text-align:center; padding:90px 30px; border-radius:var(--r-xl); background:radial-gradient(80% 130% at 50% 0%, rgba(201,162,75,.18), var(--ink-1)); border:1px solid var(--line); }
+  .cta-final h2{ font-family:var(--serif); font-size:clamp(2.6rem,5vw,4.4rem); line-height:1; margin-bottom:22px; }
+
+  /* ---------- Direction switcher ---------- */
+  .dir-switch{ position:fixed; left:18px; bottom:18px; z-index:120; display:flex; align-items:center; gap:8px; padding:8px 10px 8px 16px;
+    background:rgba(12,9,8,.85); backdrop-filter:blur(10px); border:1px solid var(--line); border-radius:999px; box-shadow:var(--shadow-2); font-size:.8rem; }
+  .dir-switch b{ color:var(--gold-soft); font-weight:700; margin-right:4px; }
+  .dir-switch a{ width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-weight:800; color:var(--tx-dim); border:1px solid var(--line); }
+  .dir-switch a.active{ background:var(--tomato); color:#fff; border-color:var(--tomato); }
+
+  @media (max-width:860px){
+    .hero-grid{ grid-template-columns:1fr; gap:30px; }
+    .hero-visual{ max-width:420px; margin:0 auto; }
+    .prod-grid{ grid-template-columns:1fr; }
+    .split{ grid-template-columns:1fr; gap:34px; }
+    .proc-grid{ grid-template-columns:1fr 1fr; }
+    .bonus-band{ padding:36px 24px; }
+  }
+  @media (max-width:560px){ .proc-grid{ grid-template-columns:1fr; } .hero-stats{ gap:20px; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<header data-nav></header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Ручная лепка · доставка 60 минут</span>
+      <h1 style="margin-top:22px">Пельмени,<br>которые ты <span class="it">собрал</span><br><span class="out">сам.</span></h1>
+      <p class="hero-sub">Премиальное тесто, авторские начинки и форма на твой вкус. От сибирской классики до лосося с трюфелем — собери идеальный пельмень в конструкторе.</p>
+      <div class="hero-cta">
+        <a href="constructor.html" class="btn btn-primary btn-lg">Собрать свой пельмень →</a>
+        <a href="menu.html" class="btn btn-ghost btn-lg">Смотреть меню</a>
+      </div>
+      <div class="hero-stats">
+        <div class="s"><b>48</b><span>авторских начинок</span></div>
+        <div class="s"><b>7</b><span>видов теста</span></div>
+        <div class="s"><b>4.9</b><span>★ средняя оценка</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-plate">
+        <div class="float-dumpling" style="width:44%; left:28%; top:30%; --rot:-8deg"></div>
+        <div class="float-dumpling" style="width:34%; left:54%; top:50%; --rot:12deg; animation-delay:-2s"></div>
+        <div class="float-dumpling" style="width:30%; left:22%; top:58%; --rot:-4deg; animation-delay:-4s"></div>
+      </div>
+      <svg class="ring-label" viewBox="0 0 100 100">
+        <defs><path id="circ" d="M50,50 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
+        <text><textPath href="#circ" startOffset="0%">PelMen · ручная лепка · авторские рецепты · PelMen · доставка по городу · </textPath></text>
+      </svg>
+      <span class="badge hot" style="position:absolute; top:6%; right:2%">★ Хит — Сибирские</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="strip">
+  <div class="marquee">
+    <span>Свинина &amp; говядина<span></span></span>
+    <span>Лосось с трюфелем</span>
+    <span>Баранина с зирой</span>
+    <span>Грибы &amp; рикотта</span>
+    <span>Утка с грушей</span>
+    <span>Краб</span>
+    <span>Свинина &amp; говядина</span>
+    <span>Лосось с трюфелем</span>
+    <span>Баранина с зирой</span>
+    <span>Грибы &amp; рикотта</span>
+    <span>Утка с грушей</span>
+    <span>Краб</span>
+  </div>
+</div>
+
+<!-- ============ FEATURED ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="eyebrow">Витрина</span>
+        <h2 style="margin-top:18px">Готовые наборы недели</h2>
+      </div>
+      <a href="menu.html" class="btn btn-ghost">Всё меню →</a>
+    </div>
+    <div class="prod-grid" id="featured"></div>
+  </div>
+</section>
+
+<!-- ============ CONSTRUCTOR TEASER ============ -->
+<section class="section tight">
+  <div class="wrap split">
+    <div class="split-visual card reveal">
+      <div class="builder-stack">
+        <div class="float-dumpling" style="width:38%; position:relative; --rot:-6deg"></div>
+      </div>
+      <div class="opt-bubble" style="left:8%; top:14%; animation-delay:0s">🫓 Свекольное тесто</div>
+      <div class="opt-bubble" style="right:6%; top:30%; animation-delay:-1.5s">🐟 Лосось</div>
+      <div class="opt-bubble" style="left:12%; bottom:22%; animation-delay:-3s">🌶️ Чипотле</div>
+      <div class="opt-bubble" style="right:10%; bottom:14%; animation-delay:-4.5s">🌹 Форма «розочка»</div>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">Конструктор</span>
+      <h2 class="display" style="font-size:clamp(2.4rem,4.4vw,3.6rem); margin:18px 0 18px">Твой рецепт —<br>от теста до соуса</h2>
+      <p class="lead">Более тысячи комбинаций. Выбери муку и цвет теста, начинку, специи, форму, способ приготовления, подачу и даже именной штамп на пельмене.</p>
+      <div class="steps">
+        <div class="step"><span class="n">01</span><div><b>Основа</b><p>Пшеничное, ржаное, нутовое или цветное тесто — со шпинатом, свёклой, куркумой.</p></div></div>
+        <div class="step"><span class="n">02</span><div><b>Начинка и специи</b><p>Классика, рыба, экзотика или веган + азиатский, средиземноморский или острый профиль.</p></div></div>
+        <div class="step"><span class="n">03</span><div><b>Форма и подача</b><p>Сибирские, гигант, розочка. В бульоне, на пару, жареные гёдза-стайл.</p></div></div>
+      </div>
+      <a href="constructor.html" class="btn btn-primary btn-lg" style="margin-top:30px">Открыть конструктор →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BONUS ============ -->
+<section class="section tight">
+  <div class="wrap">
+    <div class="bonus-band reveal">
+      <div style="max-width:560px; position:relative; z-index:2">
+        <span class="eyebrow">Клуб PelMen</span>
+        <h2 class="display" style="font-size:clamp(2.2rem,4vw,3.2rem); margin:16px 0 14px">Возвращаем баллами<br>до 12% с заказа</h2>
+        <p class="lead">Копи баллы с каждого заказа и оплачивай ими до 30% следующего. Чем выше уровень — тем вкуснее кэшбэк и приятнее подарки.</p>
+        <div class="bonus-tiers">
+          <div class="tier"><div class="t-name">Тесто</div><div class="t-pct">+7% баллами</div><p>Старт для всех</p></div>
+          <div class="tier"><div class="t-name">Серебро</div><div class="t-pct">+9% баллами</div><p>от 10 000 ₽</p></div>
+          <div class="tier"><div class="t-name">Золото</div><div class="t-pct">+12% баллами</div><p>от 30 000 ₽</p></div>
+        </div>
+        <a href="bonus.html" class="btn btn-gold btn-lg" style="margin-top:28px">В личный кабинет</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="section tight">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow">Как это работает</span><h2 style="margin-top:18px">Четыре шага до ужина</h2></div>
+    </div>
+    <div class="proc-grid">
+      <div class="proc reveal"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div><h3>Выбери</h3><p>Готовый набор из меню или собери свой в конструкторе.</p></div>
+      <div class="proc reveal"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v18M3 12h18"/></svg></div><h3>Настрой</h3><p>Тесто, начинка, форма, специи, подача и упаковка.</p></div>
+      <div class="proc reveal"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3h2l2 12h11l2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div><h3>Оформи</h3><p>Оплати онлайн, спиши баллы, выбери удобное время.</p></div>
+      <div class="proc reveal"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12l4 4L21 4"/></svg></div><h3>Получи</h3><p>Лепим под заказ и привозим за 60 минут. Свежее, не заморозка.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="section tight">
+  <div class="wrap">
+    <div class="cta-final reveal">
+      <span class="eyebrow center" style="justify-content:center">Проголодался?</span>
+      <h2 class="display" style="margin-top:18px">Собери свой<br>идеальный пельмень</h2>
+      <div class="hero-cta" style="justify-content:center; margin-top:8px">
+        <a href="constructor.html" class="btn btn-primary btn-lg">Открыть конструктор →</a>
+        <a href="menu.html" class="btn btn-ghost btn-lg">Готовые наборы</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer data-footer></footer>
+
+<!-- Direction switcher -->
+<div class="dir-switch">
+  <b>Дизайн:</b>
+  <a href="index.html" class="active" title="Направление 1 — Кино-эдиториал">1</a>
+  <a href="home-2.html" title="Направление 2 — Меню-первый">2</a>
+  <a href="home-3.html" title="Направление 3 — Журнальная сетка">3</a>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/products.js"></script>
+<script>
+  // Render featured products
+  const feat = (window.PRODUCTS||[]).slice(0,3);
+  const host = document.getElementById('featured');
+  host.innerHTML = feat.map(p=>`
+    <article class="card prod" data-id="${p.id}">
+      <div class="food-ph"><div class="dumpling"></div><span class="tag">${p.tag}</span></div>
+      <div class="body">
+        <div class="title">${p.title}</div>
+        <div class="desc">${p.desc}</div>
+        <div class="row">
+          <div class="price">${PelMen.money(p.price)} <small>/ ${p.weight}</small></div>
+          <button class="btn btn-primary btn-sm" data-add>В корзину</button>
+        </div>
+      </div>
+    </article>`).join('');
+  host.addEventListener('click', e=>{
+    const card = e.target.closest('.prod'); if(!card) return;
+    const p = feat.find(x=>x.id===card.dataset.id);
+    if(e.target.closest('[data-add]')){ e.stopPropagation(); PelMen.addToCart({title:p.title, price:p.price, kind:'set', meta:p.tag}); }
+    else location.href='menu.html';
+  });
+</script>
+</body>
+</html>

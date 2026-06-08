@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PelMen — направление 3 · журнальная сетка</title>
+<link rel="stylesheet" href="styles/base.css">
+<style>
+  /* Direction 3: editorial magazine mosaic */
+  .mag{ padding:48px 0 90px; }
+  .mosaic{ display:grid; grid-template-columns:repeat(12,1fr); grid-auto-rows:minmax(120px,auto); gap:16px; }
+  .tile{ border-radius:var(--r-lg); overflow:hidden; position:relative; border:1px solid var(--line); }
+
+  .tile-hero{ grid-column:span 7; grid-row:span 3; background:radial-gradient(120% 100% at 30% 10%, #2a1a13, #120d09 70%); padding:46px; display:flex; flex-direction:column; justify-content:space-between; }
+  .tile-hero h1{ font-family:var(--serif); font-weight:600; font-size:clamp(2.8rem,5.4vw,5.4rem); line-height:.92; letter-spacing:-.015em; }
+  .tile-hero h1 em{ font-style:italic; color:var(--tomato); }
+  .tile-hero .row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+
+  .tile-quote{ grid-column:span 5; grid-row:span 2; background:linear-gradient(120deg,var(--bordo-deep),var(--ink-2)); padding:34px; display:flex; flex-direction:column; justify-content:center; gap:16px; overflow:hidden; }
+  .tile-quote .q{ font-family:var(--serif); font-style:italic; font-size:clamp(1.3rem,1.9vw,1.7rem); line-height:1.22; text-wrap:pretty; }
+  .tile-quote .who{ font-size:.85rem; color:var(--gold-soft); letter-spacing:.04em; }
+
+  .tile-stat{ grid-column:span 5; grid-row:span 1; background:var(--ink-1); padding:24px 30px; display:flex; flex-wrap:wrap; align-content:center; align-items:center; gap:16px 26px; }
+  .tile-stat .s{ flex:0 0 auto; min-width:74px; }
+  .tile-stat .s b{ font-family:var(--serif); font-size:clamp(1.7rem,2.2vw,2.2rem); display:block; line-height:1; }
+  .tile-stat .s span{ font-size:.78rem; color:var(--tx-faint); }
+
+  .tile-prod{ grid-column:span 4; grid-row:span 2; display:flex; flex-direction:column; cursor:pointer; transition:.3s; }
+  .tile-prod:hover{ transform:translateY(-5px); border-color:var(--gold-soft); }
+  .tile-prod .food-ph{ flex:1; border-radius:0; min-height:150px; }
+  .tile-prod .b{ padding:18px 20px; background:var(--ink-1); }
+  .tile-prod .t{ font-family:var(--serif); font-size:1.4rem; }
+  .tile-prod .r{ display:flex; justify-content:space-between; align-items:center; margin-top:6px; }
+  .tile-prod .p{ font-weight:800; }
+
+  .tile-cta{ grid-column:span 4; grid-row:span 2; background:radial-gradient(90% 120% at 50% 0%, rgba(201,162,75,.2), var(--ink-1)); padding:34px; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; gap:14px; }
+  .tile-cta h3{ font-family:var(--serif); font-size:2rem; line-height:1; }
+
+  .tile-bonus{ grid-column:span 4; grid-row:span 2; background:var(--ink-2); padding:32px; display:flex; flex-direction:column; justify-content:center; gap:8px; }
+  .tile-bonus .big{ font-family:var(--serif); font-size:3.2rem; color:var(--gold-soft); line-height:.9; }
+
+  @media (max-width:920px){
+    .mosaic{ grid-template-columns:repeat(6,1fr); }
+    .tile-hero{ grid-column:span 6; grid-row:span 2; }
+    .tile-quote{ grid-column:span 6; }
+    .tile-stat{ grid-column:span 6; }
+    .tile-prod,.tile-cta,.tile-bonus{ grid-column:span 3; }
+  }
+  @media (max-width:560px){
+    .mosaic{ grid-template-columns:1fr; }
+    .tile-hero,.tile-quote,.tile-stat,.tile-prod,.tile-cta,.tile-bonus{ grid-column:span 1; }
+    .tile-hero{ padding:32px; }
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<header data-nav></header>
+
+<section class="mag">
+  <div class="wrap">
+    <span class="eyebrow" style="margin-bottom:26px; display:inline-flex">Витрина · издание №12</span>
+    <div class="mosaic" style="margin-top:18px">
+
+      <div class="tile tile-hero">
+        <div>
+          <h1>Тесто. Начинка.<br><em>Характер.</em></h1>
+        </div>
+        <div>
+          <p class="muted" style="max-width:42ch; margin:0 0 22px">Домашние пельмени ручной лепки и конструктор, в котором ты сам решаешь, каким будет ужин.</p>
+          <div class="row">
+            <a href="constructor.html" class="btn btn-primary btn-lg">Собрать свой →</a>
+            <a href="menu.html" class="btn btn-ghost btn-lg">Меню</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tile tile-quote">
+        <div class="q">«Лучшие пельмени, что я пробовал вне дома бабушки. Лосось с трюфелем — отдельная любовь.»</div>
+        <div class="who">— Артём, постоянный гость клуба «Золото»</div>
+      </div>
+
+      <div class="tile tile-stat">
+        <div class="s"><b>48</b><span>начинок</span></div>
+        <div class="s"><b>1000+</b><span>комбинаций</span></div>
+        <div class="s"><b>60</b><span>минут до двери</span></div>
+        <div class="s"><b>4.9★</b><span>оценка</span></div>
+      </div>
+
+      <article class="tile tile-prod" data-id="p-salmon">
+        <div class="food-ph"><div class="dumpling"></div><span class="tag">Премиум</span></div>
+        <div class="b"><div class="t">Лосось &amp; трюфель</div><div class="r"><span class="muted" style="font-size:.85rem">400 г</span><span class="p">920 ₽</span></div></div>
+      </article>
+
+      <div class="tile tile-bonus">
+        <span class="eyebrow">Клуб PelMen</span>
+        <div class="big">12%</div>
+        <p class="muted" style="font-size:.92rem; margin:0">возвращаем баллами и оплачиваем ими до 30% следующего заказа.</p>
+        <a href="bonus.html" class="btn btn-gold btn-sm" style="margin-top:12px">В кабинет</a>
+      </div>
+
+      <div class="tile tile-cta">
+        <span class="eyebrow">Сюрприз</span>
+        <h3>Набор<br>«Вслепую»</h3>
+        <p class="muted" style="font-size:.9rem; margin:0">Случайные начинки без подписей — гастро-рулетка на компанию.</p>
+        <a href="menu.html" class="btn btn-ghost btn-sm">Хочу →</a>
+      </div>
+
+      <article class="tile tile-prod" data-id="p-sib">
+        <div class="food-ph"><div class="dumpling"></div><span class="tag">Хит</span></div>
+        <div class="b"><div class="t">Сибирские</div><div class="r"><span class="muted" style="font-size:.85rem">500 г</span><span class="p">540 ₽</span></div></div>
+      </article>
+
+      <article class="tile tile-prod" data-id="p-duck">
+        <div class="food-ph"><div class="dumpling"></div><span class="tag">Экзотика</span></div>
+        <div class="b"><div class="t">Утка с грушей</div><div class="r"><span class="muted" style="font-size:.85rem">450 г</span><span class="p">840 ₽</span></div></div>
+      </article>
+
+      <article class="tile tile-prod" data-id="p-mush">
+        <div class="food-ph"><div class="dumpling"></div><span class="tag">Веган</span></div>
+        <div class="b"><div class="t">Грибы &amp; рикотта</div><div class="r"><span class="muted" style="font-size:.85rem">500 г</span><span class="p">620 ₽</span></div></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<footer data-footer></footer>
+
+<div class="dir-switch" style="position:fixed; left:18px; bottom:18px; z-index:120; display:flex; align-items:center; gap:8px; padding:8px 10px 8px 16px; background:rgba(12,9,8,.85); backdrop-filter:blur(10px); border:1px solid var(--line); border-radius:999px; box-shadow:var(--shadow-2); font-size:.8rem;">
+  <b style="color:var(--gold-soft); font-weight:700; margin-right:4px">Дизайн:</b>
+  <a href="index.html" style="width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:var(--tx-dim);border:1px solid var(--line)">1</a>
+  <a href="home-2.html" style="width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:var(--tx-dim);border:1px solid var(--line)">2</a>
+  <a href="home-3.html" style="width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--tomato);color:#fff;border:1px solid var(--tomato)">3</a>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/products.js"></script>
+<script>
+  document.querySelectorAll('.tile-prod').forEach(t=>{
+    t.addEventListener('click', ()=> location.href='menu.html');
+  });
+</script>
+</body>
+</html>

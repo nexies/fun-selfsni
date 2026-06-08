@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контакты и обратная связь — PelMen</title>
+<link rel="stylesheet" href="styles/base.css">
+<style>
+  .page-head{ padding:56px 0 8px; }
+  .page-head h1{ font-family:var(--serif); font-weight:600; font-size:clamp(2.4rem,5vw,4rem); line-height:.96; }
+  .page-head p{ font-size:1.1rem; color:var(--tx-dim); max-width:52ch; margin:16px 0 0; }
+
+  .contact-layout{ display:grid; grid-template-columns:1.2fr .8fr; gap:30px; padding:34px 0 60px; align-items:start; }
+
+  .form-card{ background:linear-gradient(180deg,var(--ink-2),var(--ink-1)); border:1px solid var(--line); border-radius:var(--r-xl); padding:34px; box-shadow:var(--shadow-2); }
+  .form-card h2{ font-family:var(--serif); font-size:1.9rem; margin-bottom:6px; }
+  .form-card .fc-sub{ color:var(--tx-dim); margin-bottom:24px; font-size:.95rem; }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+  .form-grid .full{ grid-column:1/-1; }
+  .topic-seg{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px; }
+
+  .info-card{ background:var(--ink-1); border:1px solid var(--line); border-radius:var(--r-lg); padding:26px; margin-bottom:16px; }
+  .info-card h3{ font-family:var(--serif); font-size:1.4rem; margin-bottom:14px; }
+  .info-row{ display:flex; gap:14px; align-items:flex-start; padding:11px 0; }
+  .info-row .ic{ width:40px; height:40px; flex:none; border-radius:11px; background:rgba(201,162,75,.12); color:var(--tomato); display:grid; place-items:center; }
+  .info-row b{ display:block; font-size:.96rem; }
+  .info-row span{ font-size:.86rem; color:var(--tx-dim); }
+  .channels{ display:flex; gap:10px; margin-top:8px; }
+  .channels a{ flex:1; text-align:center; padding:13px; border-radius:var(--r); background:var(--glass); border:1px solid var(--line); font-weight:700; font-size:.88rem; transition:.2s; }
+  .channels a:hover{ border-color:var(--gold-soft); background:var(--glass-2); }
+
+  .map{ height:200px; border-radius:var(--r-lg); border:1px solid var(--line); position:relative; overflow:hidden; background:
+      repeating-linear-gradient(0deg,transparent 0 28px, rgba(244,234,219,.04) 28px 29px),
+      repeating-linear-gradient(90deg,transparent 0 28px, rgba(244,234,219,.04) 28px 29px),
+      radial-gradient(circle at 60% 50%, #1e2420, #12100d); }
+  .map .pin{ position:absolute; left:60%; top:48%; transform:translate(-50%,-100%); color:var(--tomato); font-size:2rem; filter:drop-shadow(0 6px 8px rgba(0,0,0,.6)); }
+  .map .pin::after{ content:"PelMen · кухня"; position:absolute; left:50%; top:-6px; transform:translateX(-50%); white-space:nowrap; font-size:.7rem; font-weight:700; color:var(--cream); background:rgba(12,9,8,.8); padding:4px 9px; border-radius:999px; border:1px solid var(--line); }
+
+  .faq{ padding:20px 0 90px; }
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-q{ display:flex; justify-content:space-between; align-items:center; gap:16px; padding:22px 0; cursor:pointer; font-family:var(--serif); font-size:1.3rem; }
+  .faq-q .pm{ flex:none; width:30px; height:30px; border-radius:50%; border:1px solid var(--line); display:grid; place-items:center; transition:.3s; }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .35s ease; color:var(--tx-dim); }
+  .faq-a p{ padding:0 0 22px; max-width:70ch; margin:0; }
+  .faq-item.open .pm{ transform:rotate(45deg); background:var(--tomato); border-color:var(--tomato); color:#fff; }
+
+  .success-card{ text-align:center; padding:50px 30px; }
+  .success-card .ck{ width:74px; height:74px; border-radius:50%; background:linear-gradient(180deg,var(--gold-soft),var(--gold)); display:grid; place-items:center; margin:0 auto 20px; color:#231a10; font-size:2rem; }
+
+  @media (max-width:900px){ .contact-layout{ grid-template-columns:1fr; } }
+  @media (max-width:560px){ .form-grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<header data-nav></header>
+
+<div class="wrap page-head">
+  <span class="eyebrow">Контакты</span>
+  <h1 style="margin-top:14px">Напишите нам</h1>
+  <p>Вопрос, отзыв, идея для начинки или сотрудничество — мы на связи каждый день с 9:00 до 23:00.</p>
+</div>
+
+<div class="wrap">
+  <div class="contact-layout">
+    <div class="form-card" id="formCard">
+      <h2>Форма обратной связи</h2>
+      <p class="fc-sub">Ответим в течение пары часов в рабочее время.</p>
+      <div class="topic-seg" id="topics">
+        <button class="chip active" data-topic="Вопрос">Вопрос</button>
+        <button class="chip" data-topic="Отзыв">Отзыв</button>
+        <button class="chip" data-topic="Идея начинки">Идея начинки</button>
+        <button class="chip" data-topic="Сотрудничество">Сотрудничество</button>
+        <button class="chip" data-topic="Проблема с заказом">Проблема с заказом</button>
+      </div>
+      <div class="form-grid" style="margin-top:18px">
+        <div class="field"><label>Имя</label><input class="input" id="c-name" placeholder="Как к вам обращаться"></div>
+        <div class="field"><label>Телефон или e-mail</label><input class="input" id="c-contact" placeholder="+7… или mail@…"></div>
+        <div class="field full"><label>Сообщение</label><textarea class="textarea" id="c-msg" placeholder="Расскажите подробнее…"></textarea></div>
+        <label class="full" style="display:flex; gap:10px; align-items:center; font-size:.86rem; color:var(--tx-dim); margin-bottom:18px">
+          <input type="checkbox" id="c-agree" checked style="width:18px;height:18px;accent-color:var(--tomato)">
+          Согласен на обработку персональных данных
+        </label>
+      </div>
+      <button class="btn btn-primary btn-lg" id="sendBtn">Отправить сообщение →</button>
+    </div>
+
+    <div>
+      <div class="info-card">
+        <h3>Контакты</h3>
+        <div class="info-row"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L8 9.6a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg></span><div><b>8 800 000-00-00</b><span>Ежедневно 9:00–23:00, бесплатно по РФ</span></div></div>
+        <div class="info-row"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></span><div><b>hi@pelmen.ru</b><span>Для заказов и сотрудничества</span></div></div>
+        <div class="info-row"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><div><b>ул. Пельменная, 12</b><span>Самовывоз и дегустации</span></div></div>
+        <div class="channels">
+          <a href="#">Telegram</a><a href="#">WhatsApp</a><a href="#">VK</a>
+        </div>
+      </div>
+      <div class="info-card" style="padding:0; overflow:hidden">
+        <div class="map"><div class="pin">📍</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section tight" style="padding-top:20px">
+  <div class="wrap">
+    <span class="eyebrow">Частые вопросы</span>
+    <h2 class="display" style="font-size:clamp(2rem,4vw,3rem); margin:14px 0 30px">Коротко о главном</h2>
+    <div class="faq">
+      <div class="faq-item"><div class="faq-q">Как быстро доставляете?<span class="pm">+</span></div><div class="faq-a"><p>Лепим под заказ и привозим курьером за 60 минут по городу. Доставка бесплатна от 1 500 ₽, иначе 199 ₽. Можно выбрать удобный интервал на день вперёд.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Пельмени свежие или заморозка?<span class="pm">+</span></div><div class="faq-a"><p>Мы лепим вручную после оформления заказа и привозим сырыми и свежими — вы варите дома. По желанию можем приготовить и доставить горячими.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Что такое конструктор?<span class="pm">+</span></div><div class="faq-a"><p>Это инструмент, где вы сами выбираете тесто, начинку, специи, форму, способ приготовления, подачу и даже именной штамп. Цена пересчитывается вживую.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Как работают баллы?<span class="pm">+</span></div><div class="faq-a"><p>Возвращаем 7–12% баллами с каждого заказа в зависимости от уровня в клубе. Накопленными баллами можно оплатить до 30% следующего заказа.</p></div></div>
+      <div class="faq-item"><div class="faq-q">Есть ли веган и безглютеновые варианты?<span class="pm">+</span></div><div class="faq-a"><p>Да. В меню и конструкторе есть растительные начинки (грибы, тофу, чечевица, шпинат) и безглютеновое тесто.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer data-footer></footer>
+
+<script src="js/app.js"></script>
+<script>
+  let topic='Вопрос';
+  document.getElementById('topics').addEventListener('click',e=>{ const b=e.target.closest('[data-topic]'); if(!b)return;
+    topic=b.dataset.topic; document.querySelectorAll('#topics .chip').forEach(c=>c.classList.toggle('active',c===b)); });
+  document.getElementById('sendBtn').addEventListener('click',()=>{
+    const name=document.getElementById('c-name').value.trim();
+    const contact=document.getElementById('c-contact').value.trim();
+    const msg=document.getElementById('c-msg').value.trim();
+    if(!name||!contact||!msg){ PelMen.toast('Заполните имя, контакт и сообщение'); return; }
+    if(!document.getElementById('c-agree').checked){ PelMen.toast('Подтвердите согласие на обработку данных'); return; }
+    document.getElementById('formCard').innerHTML=`<div class="success-card">
+      <div class="ck">✓</div>
+      <h2 style="font-family:var(--serif);font-size:2.2rem;margin-bottom:10px">Сообщение отправлено!</h2>
+      <p class="lead">Спасибо, ${name}. Тема: «${topic}». Мы ответим на ${contact} в ближайшее время.</p>
+      <a href="menu.html" class="btn btn-ghost btn-lg" style="margin-top:22px">Вернуться к меню</a>
+    </div>`;
+    PelMen.toast('Спасибо за обращение! ✦','gold');
+  });
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    item.querySelector('.faq-q').addEventListener('click',()=>{
+      const open=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>{ i.classList.remove('open'); i.querySelector('.faq-a').style.maxHeight=null; });
+      if(!open){ item.classList.add('open'); const a=item.querySelector('.faq-a'); a.style.maxHeight=a.scrollHeight+'px'; }
+    });
+  });
+</script>
+</body>
+</html>
